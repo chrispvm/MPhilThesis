@@ -1,0 +1,263 @@
+\pagebreak
+\section{Appendix}
+
+
+\section*{Appendix A: Proofs and Results}
+
+\subsection*{A. Section \ref{sec:causal:structuresandmodels} (causal models)}
+
+\begin{comment}
+\begin{proof}\todo{do the proof for $X$}
+For any state of the world $\omega$, let $(D^\omega,\tilde f^\omega)$ be the causal model that represents $f^\omega$. Define $({D^\omega}' ,{\tilde f^{\omega\prime}}  )$ as follows: ${D^\omega}'$ is the same DAG as $D^\omega$, but with the relation between $X$ and $Y$ removed. To define $\tilde f'$, we pick arbitrary $x\in X$, and define $\tilde f^{\omega\prime}_Y$ by plugging $x$ for the variable $X$ into $\tilde f^\omega_Y$: i.e. for arbitrary $pa_Y'\in PA_{D^{\omega\prime}}(Y)$, define $\tilde f^{\omega\prime}_Y(pa_Y)= \tilde f^\omega_Y(x,pa_Y')$. For all other variables $O_i\in \mathcal O$, let $\tilde f^{\omega\prime}_{O_i}=\tilde f^\omega_{O_i}$. Then define $f':A\to O$ recursively by letting $o_i=f^{\omega\prime}_{O_i}(a)=\tilde f^{\omega\prime}_{O_i}(pa_{O_i}')$, where $pa_{O_i}'$ is the restriction of $(a,o)$ to $PA_{D^{\omega\prime}}$. 
+
+We will show that for all $O_i$, and any $o_i\in O_i$ and any action $a\in A$, we have $\mathbb P[f_{O_i}(a)=o_i|I]=\mathbb P[f_{O_i}'(a)=o_i|I]$. This will trivially imply that for any action $a$ we have $\mathbb E[U(f(a))|I]=\mathbb E[U(f'(a))|I]$, and therefore that the actor behaves as if every causal structure consistent with $I$ has no link between $X$ and $Y$. (Note that the uncertainty about the link between $X$ and $Y$ is, in the adjusted $f'$, incorporated in uncertainty about the effect of other parent variables to $Y$, i.e. uncertainty about $\tilde f'_{Y}$). 
+
+Pick any $D$ consistent with $I$. Take any $O_i$. We prove by three cases: either $O_i = Y$, or $O_i\neq Y$ and there is a path in $D'$ from $Y$ to $O_i$, or $O_i\neq Y$ and there is not. 
+
+\begin{description}
+\item [\textnormal{\textit{1. $O_i\neq Y$ and no path from $Y$ to $O_i$}}] : We can expand $f_{O_i}(a)=\tilde f_{O_i}(a, f_{PA_{D'}(O_i)_1}(a) , ... , f_{PA_{D'}(O_i)_n}(a))$. If we continue expanding the arguments, then after a finite number of expansion steps (since there are a finite number of variables), we get an expression containing only compositions of functions $\tilde f_{O_j}$ for different $j$. Moreover, since we assumed there is no path from $Y$ to $O_i$, the expression will not contain $\tilde f_Y$. Moreover, we can do the same expansion for $f_{O_i}'$. Moreover, since for every state of the world $\omega$ we have by definition that for all $O_j\neq Y$, $\tilde f^{\omega\prime}_{O_j}=\tilde f^{\omega}_{O_j}$, this implies that $\mathbb P[f_{O_i}(a)=z|I,D]=\mathbb P[f_{O_i}'(a)=z|I,D]$.
+
+\item [\textnormal{\textit{2. $O_i=Y$}}] : Since $A$ and $O$ are finite sets, that means that the set of functions $\prod {O_j\in PA_D(O_i)}\to O_i$ is finite for each $O_i$. Hence we can expand the following expression: 
+
+$\mathbb P[f_{Y}(a)=z|I,D]=\mathbb P[\tilde f_{Y}(a, f_X(a),f_{PA_D(Y)_{-x}}(a))=z|I,D] =$ 
+
+$\sum\limits_{\tilde f_{PA_D(Y)}}\mathbb P[\tilde f_{Y}(a, f_X(a),f_{PA_D(Y)_{-x}}(a))=z|I,D,\tilde f_{PA_D(Y)}]\cdot \mathbb P[\tilde f_{PA_D(Y)}|I,D]$
+
+Since $D$ is acyclic, if we expand the arguments of $\tilde f_Y$ in this expression, then just as in case 1, we get an expression containing only compositions of $\tilde f_{O_j}$ for different $O_j\neq Y$. Moreover, since the exact functional form of each of these $\tilde f_{O_j}$ is known within the conditional expression, therefore $f_X$ is also known and we can replace it with its constant value $x$, and write $\mathbb P[\tilde f_{Y}(a, x, pa_{-x})=z|I,D,\tilde f_{PA_D(Y)}]$. By assumption that the actor knows no causal relation from $X$ to $Y$, that means this is equal to $\mathbb P[\tilde f_{Y}(a, \tilde x, f_{PA_D(Y)_{-x}}(a))=z|I,D,\tilde f_{PA_D(Y)}]$ for any $\tilde x$, in particular for the $\tilde x$ we used to define $\tilde f_Y'$. Therefore we can use the definitions of $\tilde f_Y'$ and $f'_{PA_D(Y)_{-x}}$ to derive that the expression is equal to $\mathbb P[\tilde f_{Y}'(a, f'_{PA_D(Y)_{-x}}(a))=z|I,D,\tilde f_{PA_D(Y)}]$. This is obviously equal to $\mathbb P[f_{Y}'(a)=z|I,D,\tilde f_{PA_D(Y)}]$. Plugging this into the original sum formula gives us $\mathbb P[f_{Y}(a)=z|I,D]=\mathbb P[f_{Y}'(a)=z|I,D]$\\
+
+\item [\textnormal{\textit{3. $O_i\neq Y$ and a path from $Y$ to $O_i$}}] : If we expand the expression $f_{O_i}(a)=z$ as before, let $\phi$ be shorthand for the resulting expression. Moreover, let $\phi'$ be the shorthand for the same expansion of $f_{O_i}'(a)=z$. $\phi$ will contain compositions of the form $\tilde f_{O_j}$ for different $O_j$. Let $W$ be the set $\mathcal O / \{Y\}$ of outcome variables except $Y$. Then we can expand the $\mathbb P[f_{O_i}(a)=z|I,D]$ as:
+
+$\sum\limits_{\tilde f_{W}}\sum\limits_{y\in Y}
+\mathbb P[\phi|I,D,\tilde f_{W},f_Y(a)=y]\cdot 
+\mathbb P[f_Y(a)=y|I,D,\tilde f_{W}]\cdot 
+\mathbb P[\tilde f_{W}|I,D]$
+
+Replacing every occurance of $\phi$, $\tilde f_{O_j}$ or $f_{O_j}$ in this expression, with $\phi'$, $\tilde f_{O_j}'$ or $f_{O_j}'$, will not change the value of the resulting probability. This can be seen as follows: First, note that for all states of the world $\omega$, $\tilde f_W^\omega=\tilde f_W^{\omega\prime}$ by definition, so clearly $\mathbb P[\tilde f_{W}|I,D]=\mathbb P[\tilde f_{W}'|I,D]$. 
+
+For the first factor, note that every occurance of $f_Y(a)$ in $\phi$ can be replaced with $y$, and all the occurrances of $f_{O_j}$ can be replaced with $f_{O_j}'$ by definition of the latter (since $O_j\neq Y$). Hence $	\mathbb P[\phi|I,D,\tilde f_{W},f_Y(a)=y]=	\mathbb P[\phi'|I,D,\tilde f_{W},f_Y(a)=y]$ which by definition of $\phi$ equals $\mathbb P[f_{O_i}'(a)=z|I,D,\tilde f_{W},f_Y(a)=y]$.  
+
+For $\mathbb P[f_Y(a)=y|I,D,\tilde f_{W}]=\mathbb P[f'_Y(a)=y|I,D,\tilde f_{W}]$ see case 2.
+
+Substituting these three equations into the sum expression gives us $\mathbb P[f_{O_i}(a)=z|I,D]=\mathbb P[f'_{O_i}(a)=z|I,D]$. 
+
+
+\end{description}
+Since this holds for every $D$ consistent with $I$, we can sum over the $D$'s and get $\mathbb P[f_{O_i}(a)=z|I]=\mathbb P[f'_{O_i}(a)=z|I]$ which is the desired result.
+\end{proof}
+\end{comment}
+
+\begin{comment}
+	TODO \todo{I should actually integrate $u_X,u_Y$ into the general version of the proof of this lemma:} Specifically, I could do something like this: define a function $h(u_Y,pa'(Y))=g(u_Y)(pa'(Y))=f'_Y(pa'(Y))$ where $g$ is basically the curried version of $h$. Then in the case of linear functions, $g(u_Y)\mapsto \left[pa'(Y)\mapsto k(pa'(Y)) +u_Y \right]$
+	
+\end{comment}
+
+
+\begin{proof}[Proof of Lemma \ref{lemma:noknowncauseimpliesexogenousvariable}]
+	
+	I restate the lemma:\bigskip
+	
+	\noindent\textbf{Lemma \ref{lemma:noknowncauseimpliesexogenousvariable}.} \textit{\noknowncauselemma}\\
+
+	For any state of the world $\omega$, let $(D^\omega,\tilde f^\omega)$ be the causal model that represents $f^\omega$. We assume that there is a link from $X$ to $Y$ in $D^\omega$. For the case when there is a link from $Y$ to $X$ this requires merely swapping the variables. Define $({D^\omega}' ,{\tilde f^{\omega\prime}}  )$ as follows: ${D^\omega}'$ is the same DAG as $D^\omega$, but with the relation between $X$ and $Y$ removed. To define $\tilde f'$, we pick arbitrary $x\in X$, and define $\tilde f^{\omega\prime}_Y$ by plugging $x$ for the variable $X$ into $\tilde f^\omega_Y$: i.e. for arbitrary $p_Y'\in P_{D^{\omega\prime}}(Y)$, define $\tilde f^{\omega\prime}_Y(p_Y)= \tilde f^\omega_Y(x,p_Y')$. For all other variables $O_i\in \mathcal O$, let $\tilde f^{\omega\prime}_{O_i}=\tilde f^\omega_{O_i}$. Then define $f':A\to O$ recursively by letting $o_i=f^{\omega\prime}_{O_i}(a)=\tilde f^{\omega\prime}_{O_i}(p_{O_i}')$, where $p_{O_i}'$ is the projection of $(a,o)$ to the variables in $P_{D^{\omega\prime}}$. 
+	
+	We will show that for all $O_i$, and any $o_i\in O_i$ and any action $a\in A$, we have $\mathbb P[f_{O_i}(a)=o_i|I]=\mathbb P[f_{O_i}'(a)=o_i|I]$. This will trivially imply that for any action $a$ we have $\mathbb E[U(f(a))|I]=\mathbb E[U(f'(a))|I]$, and therefore that the actor behaves as if every causal structure consistent with $I$ has no link between $X$ and $Y$. (Note that the uncertainty about the link between $X$ and $Y$ is, in the adjusted $f'$, incorporated in uncertainty about the effect of other parent variables to $Y$, i.e. uncertainty about $\tilde f'_{Y}$). 
+	
+	Pick any $D$ consistent with $I$. Take any $O_i\in \mathcal O$.	Let $W$ be the set $\mathcal O / \{Y\}$ of outcome variables except $Y$. Since $A$ and $O$ are finite sets, that means that the set of functions $\prod {O_j\in P_D(O_i)}\to O_i$ is finite for each $O_i$. Hence we can expand the $\mathbb P[f_{O_i}(a)=z|I,D]$ as:
+	$$\sum\limits_{\tilde f_{W}}\sum\limits_{y\in Y}
+	\mathbb P[f_{O_i}(a)=z|I,D,\tilde f_{W},f_Y(a)=y]\cdot 
+	\mathbb P[f_Y(a)=y|I,D,\tilde f_{W}]\cdot 
+	\mathbb P[\tilde f_{W}|I,D]$$
+	We will do a substitution for the first two factors in the summand based on the following equations:
+	
+	\begin{description}
+		\item [\textnormal{\textit{1. $\mathbb P\left[f_{O_i}(a)=z|I,D,\tilde f_{W},f_Y(a)=y\right]=\mathbb P\left[f_{O_i}'(a)=z|I,D,\tilde f_{W},f_Y'(a)=y\right]$}}] : To see this, we construct an expression $\phi$ as follows: We expand \[f_{O_i}(a)=\tilde f_{O_i}(a, f_{P_{D'}(O_i)_1}(a) , ... , f_{P_{D'}(O_i)_n}(a)).\] We continue expanding the arguments in the same way, except for the variable $Y$ (i.e. wherever the expression contains $f_Y(a)$, we do not expand it). Then after a finite number of expansion steps (since there are a finite number of variables), we get an expression containing only compositions of functions $\tilde f_{O_j}$ for different $O_j\neq Y$, and $f_Y$. We let $\phi$ be shorthand for the resulting expression. Moreover, let $\phi'$ similarly be the shorthand for the same expansion of $f_{O_i}'(a)$. 
+		
+		Note that due to the conditionals, every occurance of $f_Y(a)$ in $\phi$ can be replaced with $y$. And by definition of $\tilde f'$, all the occurrances of $f_{O_j}$ can be replaced with $f_{O_j}'$ (since $O_j\neq Y$). If we let $\tilde \phi$ be the resulting expression, then $\tilde \phi=z$ becomes conditionally independent of both $f_Y(a)=y$ and $f_Y'(a)=y$, so that we can replace the former with the latter to get  $\mathbb P\left[\phi=z|I,D,\tilde f_{W},f_Y(a)=y\right]=	\mathbb P\left[\tilde \phi=z|I,D,\tilde f_{W},f_Y'(a)=y\right]$. We can then replace all the occurances of $y$ in $\tilde \phi$ with $f'_Y(a)$ to get $\phi'$, and then collapse $\phi'$ back to $f_{O_i}'(a)$, so that the latter expression equals $\mathbb P[f_{O_i}'(a)=z|I,D, \tilde f_{W},f_Y'(a)=y]$, showing the result.
+		
+		\item [\textnormal{\textit{2. $\mathbb P\left[f_Y(a)=y|I,D,\tilde f_{W}\right]=\mathbb P\left[f'_Y(a)=y|I,D,\tilde f_{W}\right]$}}]: To see this, expand $f_Y(a)$ \textit{once} on the left hand side to get	$\mathbb P[\tilde f_{Y}(a, f_X(a),f_{P_D(Y)_{-x}}(a))=y|I,D,\tilde f_{W}]$.
+		
+		If we expand the arguments of $\tilde f_Y$ in this expression as for $\phi$ in step 1, we get expressions containing only compositions of $\tilde f_{O_j}$ for different $O_j\neq Y$: Since $D$ is acyclic, they will not contain any occurances of $\tilde f_Y$ or $f_Y$. And by definition, for any $O_i\neq Y$ we have $\tilde f_{O_i}=\tilde f'_{O_i}$, so that we can simply substitute $f_X(a),f_{P_D(Y)_{-x}}(a)$ by $f_X'(a),f_{P_D(Y)_{-x}}'(a)$. 	
+		Secondly, since the exact functional form of each of the $\tilde f_{O_j}$ in the resulting expansion is known within the conditional expression, that means $f_X$ is also known, so that we can replace it with its constant value $x(a)$. Doing these two substitutions gives us $\mathbb P[\tilde f_{Y}(a, x(a), f'_{P_D(Y)_{-x}}(a))=z|I,D,\tilde f_{W}]$. 
+		
+		Now we use the assumption that the actor knows no causal relation from $X$ to $Y$: This means that the previous expression is equal to $\mathbb P[\tilde f_{Y}(a, \tilde x, f'_{P_D(Y)_{-x}}(a))=z|I,D,\tilde f_{W}]$ for any $\tilde x$, in particular for the $\tilde x$ we used to define $\tilde f_Y'$. Therefore we can use the definition of $\tilde f_Y'$ to derive that the expression is equal to $\mathbb P[\tilde f_{Y}'(a, f'_{P_D(Y)_{-x}}(a))=z|I,D,\tilde f_{W}]$. This is obviously equal to $\mathbb P[f_{Y}'(a)=z|I,D,\tilde f_{W}]$, showing the result. 
+	\end{description}
+	
+	Substituting these two equations into the summand, and then contracting the summation gives us $\mathbb P[f_{O_i}(a)=z|I,D]=\mathbb P[f'_{O_i}(a)=z|I,D]$. Since this holds for every $D$ consistent with $I$, we can sum over the $D$'s and get $\mathbb P[f_{O_i}(a)=z|I]=\mathbb P[f'_{O_i}(a)=z|I]$ which is the desired result.
+	
+	If the causal effects combine additively, so that $\tilde f_Y(p(Y))=g(p(Y)_{-X})+h(x)$ for some $g,h$, then $\tilde f_Y'(p(Y))=g(p(Y)_{-X})+h(\tilde x)$ where $h(\tilde x)$ is a random variable that does not depend on any of the variables in $\mathcal O$ or $\mathcal A$ and hence is ``exogenous". We will use the notation $u_X$ for $h(\tilde x)$. Similarly we have $u_Y$ from the models in which there is a causal link from $Y$ to $X$.
+\end{proof}
+\bigskip
+
+\subsection*{A. Section \ref{sec:mainresultproxy} (proxy utility functions)}
+
+\begin{proof}[Proof of theorem \ref{theorem:generalizedsideeffectalignment}]
+	
+	We repeat the theorem for convenience:\\
+	
+	\noindent\textbf{Theorem \ref{theorem:generalizedsideeffectalignment}.} \theoremgeneralizedsideeffectalignment
+	
+	
+	We will proceed in three steps.
+	
+	\textit{Step 1}: \textit{For every utility function $U\colon O\to \mathbb R$, there is a utility function $\tilde U:O\to \mathbb R$ that only depends on variables $\mathcal X$ (over which the actor has perfect information), and that induces the same policy functions as $U$.}
+	%and $\tilde U_X\colon X\to \mathbb R$ such that $\tilde U((x,y))=\tilde f_X(x)$, i.e. such that $\tilde U$ only depends on $x$, where $\tilde U$ induces the same behavior as $U$. 
+	
+	Since the actor has perfect information about $X$, the function $f_X(a)$ is known for each $\theta$, and since the actor has perfect ignorance about $Y$, the distribution of $f_Y(a)$ conditional on $I_A,\theta$ does not depend on $a$, nor on $\theta$, so that we can consider $Y$ as a random variable independent of $a$ and $\theta$. Let $\tilde U((x,y))= \mathbb E[U(x,f_Y(a))|I_A]$ for arbitrary $a$. Clearly, $\tilde U$ only depends on variables in $\mathcal X$, and the expected utility of $U$ and $\tilde U$ are the same for all $\theta,a$, and hence their optimal action sets are the same. The latter follows from the fact that $\mathbb E[\tilde U(f(a))|I_A,\theta]=\mathbb E[\mathbb E[U(f_X(a),f_Y(a))|I_A]|I_A,\theta]=\mathbb E[U((f_X(a),f_Y(a)))|I_A,\theta]=\mathbb E[U(f(a))|I_A,\theta]$, where we have used the law of iterated expectations. 
+	
+	\bigskip
+	\textit{Step 2: For any utility function $U$ there exists a subset $X^*\subseteq X$, such that for any $\theta$, $f^\theta_X( A^*)=X^*$, where $ A^* = \argmax_{a\in  A}\mathbb E[U(f(a))|I_A,\theta]$.}
+	
+	By step 1, we only need to consider $U$ that only depend on $X$. Since by assumption the actor has perfect information about $X$, that means that for all $\theta$, the actor maximizes $\mathbb E[U(f_X(a))|I_A,\theta]=U(f_X^\theta(a))$ w.r.t. $a$. Note that \[f^\theta_X(\argmax_a U(f_X^\theta(a)))=\argmax_{x\in f^\theta_X(A)}(U(x)).\] And since $f^\theta_X(A)=X_C$ for all $\theta$, that means $f^\theta_X(A^*)=$ $\argmax\limits_{x\in X_C}U(x)\equiv X^*$.
+	
+	
+	\bigskip
+	
+	\textit{Step 3: for all $U$, $\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=\frac 1 {|X_U^*|}\sum\limits_{x\in X_U^*}  \mathbb E[U_S(x,f_Y(x))|I_S]$}.
+	
+	By step 2, for any $U$, $\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=$ $\sum\limits_\theta \mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta]\cdot \mathbb P[\theta|I_S]=$ $\sum\limits_\theta \sum\limits_{x\in X^*} \mathbb E[U_S(x,\tilde f_Y(x))|I_S,\theta]\cdot \mathbb P[x|I_S,\theta]\cdot \mathbb P[\theta|I_S]$. But by assumption, $\pi_U(\theta)$ is uniformly distributed on $A^*$, and given that for any $x\in X_C$ there is only one action that leads to it (by assumption of uniform control), that means $x$ is uniformly distributed on $X^*$ and independent of $\theta$. Therefore $\mathbb P[x|I_S,\theta]=\mathbb P[x|I_S]=\frac 1 {|X^*|}$. Hence we can rewrite it as $\frac 1 {|X_U^*|} \sum\limits_{x\in X^*} \sum\limits_\theta \mathbb E[U_S(x,\tilde f_Y(x))|I_S,\theta]\cdot  \mathbb P[\theta|I_S]= \frac 1 {|X_U^*|}\sum\limits_{x\in X_U^*}  \mathbb E[U_S(x,\tilde f_Y(x))|I_S]$.\\
+	
+	We use step 3 to complete the proof: By construction, \[X_{U^*}^*=\argmax\limits_{x\in X_C}\mathbb E[U_S(x,f_Y(x))|I_S].\] Hence, $\frac 1 {|X_{U^*}^*|}\sum\limits_{x\in X_{U^*}^*}  \mathbb E[U_S(x,f_Y(x))|I_S] = \max\limits_{\tilde X \subseteq X_C}\frac 1 {|\tilde X|}\sum\limits_{x\in \tilde X}  \mathbb E[U_S(x,f_Y(x))|I_S]$. Therefore, by step 3, $\mathbb E[U_S(f(\pi_{U^*}(\theta)))|I_S]= \max\limits_{U} \mathbb E[U_S(f(\pi_U(\theta)))|I_S]$, which completes the proof.
+\end{proof}
+
+\bigskip
+
+\subsection*{A. Section \ref{sec:revealedpreference} (uniqueness)}
+
+
+
+\begin{comment}
+\begin{proof}[Proof of theorem \ref{theorem:neverfullyaligned}]
+	
+	We restate the theorem for convenience:\\
+	
+	\noindent\textbf{Theorem \ref{theorem:neverfullyaligned}.} \theoremneverfullyaligned\\
+	
+	\noindent We show the following: Let $U:O\to \mathbb R$ be an arbitrary utility function. There exists an $\epsilon>0$ with $\tilde U=U_S+\epsilon\cdot U$, such that $\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[\tilde U(f(\pi(\theta)))|I_A]\subseteq\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_A]$.
+	
+	\begin{description}
+		\item [$(*)$] : Let $U:O\to \mathbb R$ be an arbitrary utility function. There exists an $\epsilon>0$ with $\tilde U=U_S+\epsilon\cdot U$, such that $\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[\tilde U(f(\pi(\theta)))|I_A]\subseteq\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_A]$.
+	\end{description}
+	
+	For brevity, let $p^\theta_a(o)$ denote $\mathbb P(f(a)=o|I_A,\theta)$, and let $U_S\cdot p^\theta_a$ denote the dot product $\sum_{o\in O}p^\theta_a(o)\cdot U_S(o)$. 
+	
+	Take any arbitrary utility function $U$, and let $\tilde U=U_S+\epsilon\cdot U$. Take any arbitrary $\theta\in\Theta$ and $a\in  A$. We first show that if $a$ is suboptimal according to $U_S$, then there is a $\Delta\in\mathbb R$, such that if $0<\epsilon\leq\Delta$, then $a$ is also suboptimal according to $\tilde U$. 
+	
+	Assume that $a$ is suboptimal according to $U_S$, i.e. that $a\notin \argmax\limits_{a\in\mathcal A}\mathbb E[ U_S(f(a))|I_A,\theta]$, so that there is an $\tilde a\in\mathcal A$ such that $U_S\cdot p^\theta_{\tilde a}>U_S\cdot p^\theta_a$. Then obviously, there exists a sufficiently small positive $\delta \in \mathbb R$ such that $U_S\cdot p^\theta_{\tilde a}>U_S\cdot p^\theta_a+\delta$. Then obviously since $U\cdot (p^\theta_a-p^\theta_{\tilde a})$ is a real number, there exists a positive $\Delta^\theta_a\in\mathbb R$ such that $0<\epsilon \leq \Delta^\theta_a$ implies that $\epsilon\cdot U\cdot (p^\theta_a-p^\theta_{\tilde a})<\delta$, which implies that $\tilde U\cdot p^\theta_{\tilde a}>\tilde U\cdot p^\theta_a$, where $\tilde U=U_S+\epsilon\cdot U$, so that $a\notin \argmax\limits_{a\in A}\mathbb E[\tilde U(f(a))|I_A,\theta]$.
+	
+	Since $A, \Theta$ are finite non-empty sets, there exists $\Delta=\min\limits_{a,\theta}\Delta_a^\theta$, so that $0<\epsilon<\Delta$ implies that for all $\theta\in\Theta$, $\argmax\limits_{a\in A}\mathbb E[\tilde U(f(a))|I_A,\theta]\subseteq \argmax\limits_{a\in A}\mathbb E[U_S(f(a))|I_A,\theta]$, which trivially implies the desired result.
+	
+	\bigskip
+	
+	Now the result can be easily shown. We know that $U_S\in\mathcal U^*$, since $I_A=I_S$ (see lemma \ref{lemma:AequalsTimpliesUSoptimal}). Take any $U$ that is not a linear transformation of $U_S$.\footnote{This implicitly assumes that $O$ has at least $3$ elements} Use $(*)$ and $U$ to generate  $\tilde U$, so that, since $I_A=I_S$, we have $\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[\tilde U(f(\pi(\theta)))|I_S]\subseteq$ $\argmax\limits_{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_S]$. This implies $\tilde U\in\mathcal U^*$ (see lemma \ref{lemma:firstbestpolicysetcondition}).
+\end{proof}
+\end{comment}
+\bigskip
+
+\begin{comment}
+
+	\todo{I've already stated this as a corollary somewhere}
+	
+	\begin{lemma}\label{agreewithstrictpreferenceandmonotonictransformations}
+	If $U$ agrees with strict preference of $U_S$, and $U_S$ is not indifferent between any two outcomes, then $U$ and $U_S$ are equivalent up to a monotonic transformation.
+	\end{lemma}
+	\begin{proof}
+	If there do not exist $o_1,o_2\in O$ with $o_1\neq o_2$ such that $U_S(o_1)=U_S(o_2)$, then $U_S(o_1)\geq U_S(o_2)$ implies $U_S(o_1)>U_S(o_2)$. Therefore, since for all $o_1,o_2$, we know that $U_S(o_1)\geq U_S(o_2)$ implies either $o_1=o_2$ or $U_S(o_1)>U_S(o_2)$, which by agreement of strict preferences implies $U(o_1)>U_S(o_2)$. Hence, $U_S(o_1)\geq U_S(o_2)$ implies $U(o_1)\geq U(o_2)$. This implies that there exists a strictly monotonically increasing $f:\mathbb R\to \mathbb R$ such that for all $o\in O$, $U(o)=f(U_S(o))$.
+	\end{proof}
+\end{comment}
+
+The following result was referred to in the main text:
+\begin{lemma}\label{lemma:agwstrictpref}
+	Assume complete information. Any $U$ that agrees with strict preferences of $U_S$ is optimal for the selector: $ U \in \mathcal U^*$.
+\end{lemma}
+\begin{proof}
+	Take any $U$ that agrees with strict preferences of $U_S$, so that for any $o_1,o_2\in O$, $U_S(o_1)>U_S(o_2)$ implies $U(o_1)>U(o_2)$. Then for all $\theta$, $\argmax\limits _{o\in f^\theta(A)} U(o)\subseteq \argmax\limits _{o\in f^\theta(A)}U_S(o)$. \begin{comment}That is, $c_{U}(C_\theta)\subseteq c_{U_S}(C_\theta)$.\end{comment} 
+	This obviously implies that $U\in \mathcal U^*$ (see lemma \ref{lemma:firstbestpolicysetcondition}).
+	\begin{comment}
+	For all $\theta$, because we assumed that $\mathbb P[f=f^\theta|I_A,\theta]=1$, we have $\mathbb E[\tilde U(f(a))|I_A,\theta]=\tilde U(f^\theta(a))$. 
+	\end{comment}
+\end{proof}
+
+\bigskip
+\begin{proof}[Proof of theorem \ref{theorem:guaranteedalignment}]
+	We restate the theorem for convenience:\\
+	
+	\noindent \textbf{Theorem \ref{theorem:guaranteedalignment}.} \theoremguaranteedalignment\\
+	
+	
+	
+	
+	
+	For simplicity, we will use the following terms:
+	
+	\begin{description}
+		\item \textbf{Choice set}: For any signal $\theta$, let the ``choice set" $C_\theta=f^\theta(A)$. These are the outcomes achievable given signal $\theta$.
+		
+		\item \textbf{Choice rule}: Let the ``choice rule" $c_U(C)$ of a utility function $U$ given a choice set $C$ be equal to the set $\argmax\limits_{o\in C}U(o)$. These are the choices that the actor would randomize over if given a utility function $U$.
+	\end{description}
+	Moreover, we say that $U$ \textit{agrees with strict preferences of} $U_S$ if for all $o_1,o_2$, $U_S(o_1)>U_S(o_2)$ implies $U(o_1)>U(o_2)$. (Note that this does not imply that $U$ is a monotonic transformation of $U_S$, unless $U_S$ is not indifferent between any two outcomes.)
+	
+	By lemma \ref{lemma:firstbestpolicysetcondition} we know that for any $U$, we have $U\in \mathcal U^*$ if and only if for every signal $\theta\in \Theta_S$ we have
+	$c_U(C_\theta)\subseteq c_{U_S}(C_\theta)$.
+	
+	
+	First we show $\impliedby$. Assume that for every such $o_1,o_2$, a $\theta$ exists, such that $o_1,o_2\in C_\theta$, and $c_{U_S}(C_\theta)=\{o_1\}$. Then take any $U$ that does not agree with strict preference of $U_S$ on some $\tilde o_1,\tilde o_2$. This means that $U(\tilde o_1)\leq U(\tilde o_2)$. By transitivity, there must exist some $o_1, o_2$ such that $U_S(o_1)>U_S(o_2)$ but $U(o_1)\leq U(o_2)$, and moreover, where no other $\tilde o$ exists such that $U_S(o_1)>U_S(\tilde o)>U_S(o_2)$. This means by assumption that there is a $\theta\in \Theta_S$ such that $o_1,o_2 \in C_\theta$. Hence if $o_1\in c_U(C_\theta)$, then $o_2$ must also be in $c_U(C_\theta)$. If $o_1\notin c_U(C_\theta)$, then some other $\bar o$ that is in $c_U(C_\theta)$, but by assumption $o_1$ was the unique element in $c_{U_S}(C_\theta)$. Hence, in either case, $c_U(C_\theta)\nsubseteq c_{U_S}(C_\theta)$. Hence $U\notin \mathcal U^*$.	
+	
+	Now we show $\implies$. Assume some $o_1,o_2$ with $U_S(o_1)>U_S(o_2)$ and no $\bar o$ exists such that $U_S(o_1)>U_S(\bar o)>U_S(o_2)$, but there is no $\theta \in \Theta_S$ such that $o_1,o_2\in C_\theta$ and $o_1$ is the unique element of $c_{U_S}(C_\theta)$. We can construct the following utility function: \[U(o)=\begin{cases}
+	U_S(o_1)-\delta &\text{if }o=o_2\\
+	U_S(o_2)+\delta &\text{if }o=o_1\\
+	U_S(o) &\text{otherwise}
+	\end{cases}\] where $0<\delta< 0.5\cdot (U_S(o_1)-U_S(o_2))$. Because there is no $\tilde o$ such that $U_S(o_1)>U_S(\bar o)>U_S(o_2)$, it is easy to see that $U$ agrees with strict preferences of $U_S$ on all pairs of outcomes, except $(o_1,o_2)$. That is, for any pair $(\bar o_1,\bar o_2)$ other than $(o_1,o_2)$, if $U_S(o_1)>U_S(o_2)$ then $U(o_1)>U(o_2)$.
+	
+	Therefore, if $\bar o\in\argmax\limits_{o\in C_\theta} U(o)$, then either $\bar o\in\argmax\limits_{o\in C_\theta} U_S(o)$ as well, or $\bar o=o_1$ and $o_1,o_2\in C_\theta$ and no other $o\in C_\theta$ for which $U_S(o)> U_S(o_1)$. But the latter is precisely what we assumed was not the case. Therefore, for all $\theta$ we have $\argmax\limits_{o\in C_\theta} U(o)\subseteq \argmax\limits_{o\in C_\theta} U_S(o)$, so that $U\in\mathcal U^*$, even though $U$ does not agree with strict preferences of $U_S$.
+\end{proof}
+
+\bigskip
+
+\begin{proof}[Proof of Proposition \ref{prop:Ustarnotunique}]
+	
+	\bigskip
+	
+	We restate the proposition for convenience:\\
+	
+	
+	\noindent\textbf{Proposition \ref{prop:Ustarnotunique}} \propUstarnotunique
+	
+	\bigskip
+	
+	From the proof of theorem \ref{theorem:generalizedsideeffectalignment}, the actor always achieves its maximum on $X^*_U$. Consider $X_{U^*}^*=\argmax\limits_{x\in X_C}\mathbb E[U_S(x,f_Y(x))|I_S]$ as defined in that proof, and simply use the assumption that $\argmax\limits_{x\in X_C}(U(x))\subseteq \argmax\limits_{x\in X_C}(U^*(x))$ and step 3 of the proof to see that $\mathbb E[U_S(f(\pi_{U}(\theta)))|I_S]= \max\limits_{\tilde U} \mathbb E[U_S(f(\pi_{\tilde U}(\theta)))|I_S]$
+\end{proof}
+
+
+
+
+
+
+
+\begin{comment}
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\end{comment}
+
+
+\pagebreak
+\section*{Appendix B: Extensions}
+The model in section \ref{sec:model:singlesignalsingleaction} makes the significant simplification that the actor only observes a single signal, and takes a single action. We can generalize this, and consider an arbitrarily complex second stage by generalizing the set of policy functions into some more general set $\Pi$, and the outcomes it results in $O$. In particular, the second stage could be a markov decision process, which is one of the main decision problems considered in machine learning contexts. In this case, $\Pi$ would be the set of functions that map a \textit{history} of observations to an action, and $O$ would be the set of possible state histories. Alternatively, the second stage could itself be a multi-stage game with other agents. In this case $\Pi$ would be the actor's set of strategies, and the chosen strategies of the other players would be incorporated into a more general function $F\colon \Pi\to O$. 
+
+\begin{comment}
+We then rewrite the equations describing the two stages in section \ref{sec:model:singlesignalsingleaction} to specify a very general class of two stage games:
+\begin{align*}
+\mathcal U^* &= \argmax_{U\in \mathcal U} \mathbb E [U_S(F(\pi_U))|I_S]\\
+\Pi^*_{U} &= \argmax_{\pi\in \Pi} \mathbb E [U(F(\pi))|I_A]
+\end{align*}
+We add this generalization for conceptual completeness and to guide future work, but in this paper we will only consider the special case described in section \ref{sec:model:singlesignalsingleaction}
+\end{comment}
+
+Moreover, the model described in section \ref{sec:model:singlesignalsingleaction} assumes that the actor's knowledge is \textit{fixed}. This simplifies the analysis, and still captures some key insight, but is unrealistic, since in reality a learning algorithm is able to select the entire actor's algorithm, which includes all its prior information. Intuitively, one might think of this as the selector also being able to send the actor a ``message" during stage $1$, though this is only a metaphor. There will however be a limitation on the prior information that the selector can choose (the messages it can send). We can thus generalize the model further, and have the selector select not just a utility function, but an ``algorithm" or ``mechanism" $M\in \mathcal M$, which will capture both the actor's utility function $U_M$ \textit{and} its prior information $I_M$:
+
+We then rewrite the equations describing the two stages in section \ref{sec:model:singlesignalsingleaction} to specify a very general class of two stage games:
+\begin{align*}
+\mathcal M^* &= \argmax_{M\in \mathcal \mathcal M} \mathbb E [U_S(F(\pi_M))|I_S]\\
+\Pi^*_{M} &= \argmax_{\pi\in \Pi} \mathbb E [U_M(F(\pi))|I_M]
+\end{align*}
+
+Finally, we can generalize it further, and not assume at all that the actor chooses its actions by maximizing an expected utility function, for example because the selector does not fully delegate decision making to the actor. We would then consider a more general class of algorithms $\mathcal M$, without assuming that $\Pi^*_{M} = \argmax_{\pi\in \Pi} \mathbb E [U_M(F(\pi))|I_M]$. 
+

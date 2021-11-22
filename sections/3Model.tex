@@ -1,0 +1,375 @@
+
+\section{The Model}\label{sec:model}
+
+Our model will be based on \textit{causal diagrams} like the one shown in the introduction. These causal diagrams will be summarized as a function $f$, and will be introduced in section \ref{sec:causal:structuresandmodels}. However, we first state the model without going into the internal structure of $f$.
+
+\subsection{The basic model}\label{sec:model:singlesignalsingleaction}
+There are two utility maximizing agents: the \textit{actor} and the \textit{selector}.
+
+There will be a state of the world $\omega$ from a finite set $\Omega$. Intuitively, the state $\omega$ will contain at least all information about the environment of the actor before the actor makes a decision. We will later see that it also describes what signal the actor receives. In the example of a self-driving car, $\omega$ might describe where the car is located, whether there are other cars around it, how fast they are moving, whether it is raining, and so forth. 
+
+We will make the simple assumption that there is a single time period: The actor is going to take a single action $a$ from a finite set $A$ of actions. Intuitively, for a self-driving car this might be a decision on what direction to steer in, whether to break, or gas, what gear to use, and so forth. An action is going to result in some \textit{outcome} $o$ from a finite set $O$.  What outcome a given action results in will depend on the state of the world $\omega$. This is formalized by a function $f^\omega\colon A \to O$. $f$ describes for every state, what outcome will result from a certain action. For example, $o$ might describe whether the car reaches its destination, or crashes, whether it has violated a traffic rule, and so forth. If the state $\omega$ is such that the car is in front of a red traffic light, then the action ``accelerate" would cause an outcome ``traffic violation", but not if the traffic light in $\omega$ is green. Both the selector's and actor's utility functions will be defined on outcomes: $U_S,U_A\colon O\to\mathbb R$.
+
+For now we assume $f$ is arbitrary, but in section \ref{sec:causal:structuresandmodels} we will analyze $f$ as a ``causal diagram": we will graphically draw the causal effects of different variables roughly as in figure \ref{fig:intro-self-driving-car-bounded-rationality} in the introduction. 
+
+However, the state $\omega$ is uncertain, and so $f$ may also be uncertain: There is a distribution $\mathbb P$ over $\Omega$.\footnote{We will assume throughout, that actor and selector have common prior $\mathbb P$ on $\Omega$. This does not make any assumptions about the selector's and actor's knowledge: For any training distribution and every actor's information set we can simply set up $(\Omega, \mathbb P)$ such that $\mathbb P[\cdot|I_S]$ and $\mathbb P[\cdot|I_A]$ equal the desired distributions. %\cite{Aumann1976} Moreover, if we wish to consider uncountable $\Omega$, we can consider more general probability spaces $(\Omega,\mathcal B,\mathbb P)$ for sigma-algebra $\mathcal B$, but this won't be necessary here.
+} The actor and selector have prior information $I_A\subseteq \Omega$ and $I_S \subseteq \Omega$ respectively, which will denote the possible states that the actor and selector respectively consider to be possible. Intuitively, $I_S$ contains the training data, and $I_A$ is the prior information that the actor has.\footnote{It would be more realistic to consider the prior information $I_A$ to be part of the specification of the algorithm that the selector gives the actor. However, for simplicity we will consider it to be exogenous in this paper.}
+
+In order to provide the actor some information about $f$, the actor receives a signal $\theta$ from a finite set $\Theta$. The signal observed in state $\omega$ is denoted $\theta^\omega$. In this way, observing $\theta$ tells us something about $f$. For example, this signal $\theta$ might be the input from the cameras of the self-driving car, and might contain the information that there is a pedestrian in front of the car, so that $f$ is such that if the actor decides to accelerate, this would result in an outcome where a pedestrian is killed. The selector will never observe $\theta$. 
+\begin{comment}
+	However, we will assume in the examples in section \ref{sec:causal:examples} that \textit{if} the selector were to observe the signal $\theta$, she would have a better ability than the actor to infer from $\theta$ what $f$ is. This captures the \textit{bounded rationality} of the actor. We formalize this by assuming that the actor has less informative prior knowledge, and will make this precise in any given example:
+	
+	\begin{assumption*}
+	The selector has (weakly) more prior information than the actor: $I_A\supseteq I_S$.\footnote{Intuitively, this is justified by the relation between the selector and actor in actual machine learning systems, though we won't model this: the selector, by selecting an algorithm, gives the actor its prior information. The selector cannot give the actor \textit{more} information than it has itself. Moreover, it will in fact give it \textit{less} information than it has, because of the complexity constraints on the algorithm (as we discussed in section \ref{sec:existingwork:ML}). However, in this paper we will for simplicity take $I_A$ to be exogenous.}
+	\end{assumption*}\todo{explain why this is the assumption, give some concreteness}
+	
+	
+\end{comment}
+
+
+
+Given that the actor will select an action for each possible signal $\theta$, we can capture the actions that the actor chooses as a function $\pi\colon\Theta \to A$. We call $\pi$ the actor's \textit{policy function} or simply \textit{policy}.\footnote{This is intended to coincide with standard terminology in machine learning.}  
+
+The actor will choose its policy function $\pi$ to maximize its utility $U_A\colon O\to \mathbb R$ over outcomes. However, $U_A$ is not exogenously specified, but selected by a ``selector". The selector itself is endowed with a exogenously specified\footnote{In fact, in the background we assume that $U_S$ is specified by humans, though we will not model this explicitly.} utility function $U_S\colon O\to \mathbb R$ over outcomes. The selector has an interest in ensuring that the actor chooses an action that will result in high expected $U_S$. To this end, the selector has one decision to make, which is to select the utility function $U_A\colon O\to \mathbb R$ the actor will maximize.\footnote{In principle we could analyze the case where the selector can only choose from a subset of such utility functions. In fact, there is a reasonable case to do this, since some utility functions may be far computationally harder to optimize than others \cite{Hubinger2019}. }
+
+\medskip\noindent We can thus summarize the model as a class of two stage games:
+
+\begin{quote}
+	\textbf{Stage 1.} The selector selects a utility function $U_A\colon O\to \mathbb R$ over outcomes that the actor will maximize in stage $2$. In equilibrium, the selector will choose $U_A$ to be an element $U_A^*$ from the set $\mathcal U^*$ whose induced policy $\pi_{U^*_A}$ in stage $2$ maximizes its own expected utility $U_S\colon O\to \mathbb R$:
+	\begin{align*}
+	\mathcal U^* &= \argmax_{U\colon O\to \mathbb R} \mathbb E [U_S(f(\pi_U(\theta)))|I_S].
+	\end{align*}
+	
+	\textbf{Stage 2.} Depending on the chosen $U_A$ in stage $1$, the actor chooses a policy $\pi_{U_A}\colon \Theta\to A$ that gives an action for each possible signal. This policy results in an uncertain outcome $f(\pi_{U_A}(\theta))$, since there is uncertainty over $f\colon A\to O$ and $\theta$. In equilibrium, the actor will choose a $\pi_{U_A}$ from the set of policies $\Pi^*_{U_A}$ that maximize its expected utility $U_A$:
+	\begin{align*}
+	\Pi^*_{U_A} &= \argmax_{\pi\colon \Theta\to A} \mathbb E [U_A(f(\pi(\theta)))|I_A].
+	\end{align*}
+\end{quote}
+
+Note that as it is currently specified, the actor has a potentially large amount of possible decisions that are optimal: Any policy function in $\Pi^*_{U_A}$ is an optimal choice. In particular, an actor with a constant $U$ will be indifferent between outcomes, and therefore any policy would be an equilibrium policy for it, including the policies that are optimal for $U_S$. However, such an equilibrium is in some sense ``pathological": We as outsiders have no reason to expect this will occur, since the actor would have no reason to choose a policy that coincidentally is optimal for the selector. We want to therefore apply a ``principle of indifference", and assume that the actor simply picks a policy at random from its set of optimal policies (independently distributed from $f$). We thus make the following assumption throughout the paper, which we will use without always stating so explicitly:
+\begin{assumption*}
+	The actor will always randomize uniformly over its optimal policies $\Pi_{U_A}^*$.
+\end{assumption*}
+
+
+Using this assumption, we can characterize the set of equilibria of this class of games as tuples of a utility function for the actor, together with the set of induced optimal policies for that utility function, $(U_A^*,\Pi_{U_A^*}^*)$ for $U_A^*\in\mathcal U^*$.\footnote{In particular, this is a sequential equilibrium: For any $U\colon O\to \mathbb R$, if the selector would set $U_A=U$, the actor's strategy is to optimize $U$, even for $U$ that the selector does not end up choosing.} The main part of this paper will study such equilibria. In particular, the central question we are interested in, is whether the actor will be ``aligned" with its selector in such an equilibrium:
+
+\begin{definition}[Alignment]
+	The actor is aligned with the selector, if $U_A^*$ is ``equivalent" to $U_S$.
+\end{definition}
+
+Note that ``equivalent" here is not defined, and so this definition is informal. This is intentional, since there are multiple possible notions of alignment. We give a formal definition of ``weak alignment" in section \ref{sec:revealedpreference}.
+
+
+\subsection{Informational assumptions}
+
+We have already assumed a form of asymmetric information: The actor observes $\theta$ while the selector does not. We now state further assumptions that we will make on the prior information sets $I_A,I_S$ to incorporate the bounded rationality of the two players. We will further specify these assumptions in the specific examples and results.
+
+As we stated in section \ref{sec:existingwork:selectorandactor}, we assume that the selector is boundedly rational in its ability to reason about signals in $\Theta$ about which it doesn't have data. In fact, we will make the assumption that there is a set $\Theta_S\subset\Theta$ about which the selector has some information, and that the selector is completely unable to reason about other signals. For example, if the dataset of the selector of a self-driving car contains only observations about cars driving on concrete roads, then the selector will have no causal knowledge of cars driving on dirt roads. In fact, we will assume that the selector is even unable to reason about the actor's behaviour for signals outside $\Theta_S$.\footnote{This is a defensible assumption, since baseline learning algorithms work by iteratively going through a training data set, and only taking into account the data in that set, without ``reasoning" about what decisions the actor would make outside the dataset. One can view some forms of meta-learning as an attempt to improve the selector's bounded rationality in this respect \citep{Andrychowicz2018}. } Intuitively, this means that the selector of does not even know how to delegate the decision to the actor. We capture this type of bounded rationality as follows:
+\begin{assumption*}
+	For any $\theta\notin \Theta_S$, the joint distribution of $(f,\pi_U(\theta))$ conditional on $I_S,\theta$ is uniform for all $U$.
+\end{assumption*}
+We can immediately state an equivalent and simpler statement of this assumption, which we will use throughout the paper, instead of using the assumption directly:
+
+\begin{lemma}\label{lemma:selectorssignals}
+	The selector behaves as if it assigns probability $\mathbb P[\theta\notin\Theta_S|I_S]=0$.
+\end{lemma}
+\begin{proof}
+	Under the assumption, we have that $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\notin \Theta_S]$ does not depend on $U$. Therefore, if we let $p=\mathbb P[\theta\in \Theta_S|I_S]$, then $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\in\Theta_S]$ as a function of $U$ is a linear transformation of $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\in\Theta_S]\cdot p + \mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\notin \Theta_S]\cdot (1-p)$, which is the selector's expected utility.
+\end{proof}
+
+We will therefore throughout the paper consider only signals in $\Theta_S$. Intuitively, the selector is so ignorant about the signals which it has no data about, that it pretends as if those signals never occur.\footnote{Alternatively, we could instead interpret lemma \ref{lemma:selectorssignals} as the basic assumption, by thinking of the selector-actor game as taking place entirely during training. In this case the selector is not boundedly rational with regards to the game. \ref{lemma:selectorssignals} shows that the two interpretations of the game are essentially equivalent.}
+
+We now formalize the bounded rationality of the actor. While the selector will never observe $\theta$, we assume that the selector has more causal knowledge conditional on $\theta\in \Theta_S$ than the actor, due to the actor's computational constraints. In the case of the car company, the selector that runs on the remote server has on the order of weeks or months to ``think through" via trial and error its data, while the actor in the car on the road has to make a split second decision and only has a single chance. We formalize this by assuming that if the selector were to observe the signal $\theta\in \Theta_S$, then it would have a better ability than the actor to infer from $\theta$ what $f$ is:
+
+\begin{assumption*}
+	Conditional on any $\theta_S$ in $\Theta_S$, the selector has (weakly) more information about $f$ than the actor:\footnote{Intuitively, this is justified by the relation between the selector and actor in actual machine learning systems, though we won't model this: the selector, by selecting an algorithm, gives the actor its prior information. The selector cannot give the actor \textit{more} information than it has itself. Moreover, it will in fact give it \textit{less} information than it has, because of the complexity constraints on the algorithm (as we discussed in section \ref{sec:existingwork:ML}). However, in this paper we will for simplicity take $I_A$ to be exogenous.} $\mathbb P[f|I_S,\theta_S,I_A]=\mathbb P[f|I_S,\theta_S]$ for all $f$.\footnote{Note that there are a finite such $f\colon \Theta \to A$, since $\Theta$ and $A$ are finite. }
+\end{assumption*}
+
+We will specify the exact assumptions on their respective causal knowledge through causal graphs, which we introduce in section \ref{sec:causal:structuresandmodels}.
+
+\begin{comment}
+	We now formalize the bounded rationality of the actor. The selector will never observe $\theta$. However, we will assume in the examples in section \ref{sec:causal:examples} that \textit{if} the selector were to observe the signal $\theta$, she would have a better ability than the actor to infer from $\theta$ what $f$ is. This captures the \textit{bounded rationality} of the actor. We formalize this by assuming that the actor has less informative prior knowledge, and will make this precise in any given example:
+	
+	\begin{assumption*}
+	The selector has (weakly) more prior information than the actor: $I_A\supseteq I_S$.\footnote{Intuitively, this is justified by the relation between the selector and actor in actual machine learning systems, though we won't model this: the selector, by selecting an algorithm, gives the actor its prior information. The selector cannot give the actor \textit{more} information than it has itself. Moreover, it will in fact give it \textit{less} information than it has, because of the complexity constraints on the algorithm (as we discussed in section \ref{sec:existingwork:ML}). However, in this paper we will for simplicity take $I_A$ to be exogenous.}
+	\end{assumption*}\todo{explain why this is the assumption, give some concreteness}
+	
+\end{comment}
+
+
+
+
+\begin{comment}
+	\begin{lemma}
+	The following assumptions about the selector's information induce the same decision on $U_A$:
+	\begin{enumerate}
+	\item For any $\theta\notin \Theta_S$, the joint distribution of $(f,\pi_U(\theta))$ conditional on $I_S,\theta$ is uniform for all $U$.
+	\item The selector assigns probability $\mathbb P[\theta\notin\Theta_S|I_S]=0$.
+	\end{enumerate}
+	\end{lemma}
+	\begin{proof}
+	Under the second assumption, the selector chooses $U_A$ to maximize \[\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\in\Theta_S].\] Under the first assumption, we have that $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\notin \Theta_S]$ does not depend on $U$. Therefore, if we let $p=\mathbb P[\theta\in \Theta_S|I_S]$, then $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\in\Theta_S]$ as a function of $U$ is a linear transformation of $\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\in\Theta_S]\cdot p + \mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta\notin \Theta_S]\cdot (1-p)$, which is what the selector maximizes under the first assumption.
+	\end{proof}
+\end{comment}
+
+
+
+\subsection{Some preliminary definitions and results}\label{sec:model:preliminaries}
+We here present some preliminary definitions and results that will simplify the analysis. Firstly, we can distinguish between two notions of optimality. On the one hand we have the policy that the selector would choose if it could choose the policy itself (the first-best). On the other hand we have the best policy given that the choice of policy has to be delegated to the actor (second-best). We formalize these two notions as follows:
+
+\begin{definition}[Second-Best and First-Best]
+	A second-best policy set is the $\Pi^*_{U^*}$ as defined in stage $2$ for some $U^*\in\mathcal U^*$. The first-best policy set is \[\Pi_S^*= \argmax\limits_{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_S].\] We say $U^*$ is first-best if $\Pi^*_{U^*}$ consists solely of first-best policies.
+\end{definition}
+We state here a trivial result without proof:
+\begin{lemma}\label{lemma:firstbestimpliessecondbest}
+	If a utility function $U$ is first-best, then it is also second-best.
+\end{lemma}
+\begin{lemma}\label{lemma:KAequalsTimpliesUSoptimal}
+	If the actor has the same information as the selector, so that $I_A=I_S$, then $U_S$ is first-best.
+\end{lemma}
+
+\begin{proof}
+	This follows trivially by substituting $I_A$ with $I_S$ in stage $2$ of the game.
+\end{proof}
+
+
+\newcommand{\lemmafirstbestpolicysetcondition
+}{If a first-best utility function exists, then any second-best utility function is also first-best. That is, for any $U$, we have $U\in \mathcal U^*$ if and only if $\Pi^*_U\subseteq \Pi_S^*$.}
+\begin{lemma}\label{lemma:firstbestpolicysetcondition}
+	\lemmafirstbestpolicysetcondition
+\end{lemma}
+\begin{proof}
+	The selector can guarantee a first-best policy by selecting the first-best utility function. But an actor with any utility function $U$ whose policy set contains non first-best policies will with positive probability choose such a sub-optimal policy (since the actor randomizes uniformly over its policies). 
+\end{proof}
+
+
+
+
+We can immediately prove existence of equilibria, which we will use throughout the paper without explicitly stating so:
+\begin{lemma}[Existence]
+	An equilibrium $(U^*_A,\Pi_{U_A}^*)$, and hence a second best policy set always exists.
+\end{lemma}
+
+\begin{proof}
+	We assumed $\Theta$ and $A$ are finite. Hence the set of policy functions $\pi\colon \Theta \to A$ is finite. Hence for any $U_A$, $\Pi_{U_A}^*$ as defined in stage $2$ of the game exists. Moreover, there is a finite set of such $\Pi_U^*$ (despite there being an uncountable number of utility functions). Since the expected utility of the selector depends on $U_A$ only through $\Pi_{U_A}^*$, there is therefore a finite number of expected levels of $U_S$ that can be obtained. This obviously implies that the argmax in stage $1$ of the game is non-empty.
+\end{proof}
+
+
+
+
+
+
+
+
+\begin{comment}
+	\begin{lemma}\label{lemma:firstbestpolicysetcondition}
+	If there is a utility function that achieves a first-best policy set, then for any $U$, we have $U\in \mathcal U^*$ if and only if
+	\[\argmax\limits _{\pi\colon \Theta\to A}\mathbb E[U(f(\pi(\theta)))|I_A]\subseteq \argmax\limits _{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_S].\]
+	\end{lemma}
+	\begin{proof}
+	Every policy $\pi$ in a first-best policy set by definition is also in $\argmax\limits _{\pi\colon \Theta\to A}\mathbb E[U_S(f(\pi(\theta)))|I_S]$, and any policy outside this set must necessarily achieve lower expected utility. Given that the actor randomizes over the (finite) left-hand set of policies, any $U$ that does not satisfy this set inclusion condition will with positive probability choose a sub-optimal policy.
+	\end{proof}
+\end{comment}
+
+
+
+
+
+For analytic simplicity, we will sometimes consider examples where the actor is able to choose a first-best policy set, despite constraints on its prior information. Surprisingly perhaps, it is possible for the actor's utility function to be different from the selector's while still resulting in a first-best policy. 
+
+
+
+\subsection{Causal models}\label{sec:causal:structuresandmodels}
+
+So far, we have not specified the ``internal structure" of the action set $A$, the outcome set $O$, or the function $f$, and have just assumed them to be arbitrary. We are now going to assume that the set of actions is a Cartesian product of \textit{sub-actions}: There is a set of \textit{sub-action} sets $\mathcal A=\{A_1,...,A_n\}$, where $A = A_1\times A_2\times...\times A_n$. Each sub-action set $A_i$ will denote some \textit{dimension} along which the actor can act. For example, for a self driving car, we might have $A=Break\times Gas\times Steer$, where $Break=\{0,1\}$ denotes whether to break or not, $Gas=[0,1]$ gives the degree by which to accelerate, and $Steer=[-90,90]$ gives the degrees by which to steer. Hence the actor might decide to break, accelerate at 100\%, and steer $45$ degrees left at the same time. 
+
+Similarly, the outcome set $O$ consists of a set of \textit{sub-outcome} sets or \textit{outcome variables} $\mathcal O=\{O_1,...,O_m\}$, where $O=O_1\times O_2\times ... \times O_m$. As a toy example, we might imagine that $O=Travel \; time \times  Damage\; to\; car \times Pedestrian\; hurt \times Traffic\; rule\; violations=[0,\infty]\times[0,1]\times\{0,1\}\times \mathbb N$.
+
+We are going to assume that there is a \textit{causal relation} between these outcome variables, which we first explain informally. So far, we have simply defined $f\colon A\to O$ as the function that determines the outcome, but we will give this function a \textit{causal structure} (after an informal discussion, we will define this formally below in definition \ref{def:causalstructure}): some outcome variables may only depend on the actor's chosen action \textit{through} other outcome variables. For example, consider the causal structure in figure \ref{fig:causaldiagramexplanation}.
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.7\linewidth]{"images/diagramexplanations/causaldiagramexplanation"}
+	\caption{\rightskip=20pt\leftskip=20pt \textit{Informal example causal diagram.} Squares denote sub-action sets: $A=Steer\times Break=[-90,90]\times \{0,1\}$, while circles/ovals denote sub-outcome sets, or outcome variables: $O=Hit\;tree \times Hit\;pedestrian \times Car\;damage \times Pedestrian\;hurt=\{0,1\}^4$. The actor will select an element of $Steer\times Break$, such as $(-30,0)$, meaning steer $30$ degrees left and do not break. Arrows denote that \textit{some} dependency from one variable to the other. Intuitively, whether the pedestrian will get hurt depends on the actions of the actor that drives the car, but only \textit{through} the variable of whether the car actually hits the pedestrian: If you want to know whether the pedestrian is hurt, it is enough to know whether the pedestrian got hit, and one does not additionally need to know the exact steering direction. If the car hits the pedestrian, this will cause \textit{both} damage to the car, \textit{and} the pedestrian to get hurt. But whether the car hits the tree or not is not relevant to whether the pedestrian is hurt. 
+	}
+	\label{fig:causaldiagramexplanation} 	
+\end{figure}
+
+
+
+
+
+
+
+
+A \textit{causal structure} such as the one in figure \ref{fig:causaldiagramexplanation} specifies the functional \textit{dependency} between the variables. However, it does not specify the \textit{exact} functional relationships. We will denote the \textit{direct} causal effects described by a causal structure as functions $\tilde f_{O_i}$ (annotated with a tilde).
+
+
+
+
+
+For example, in the causal diagram in figure \ref{fig:causaldiagramexplanation}, we have \[f_{Pedestrian\;hurt}(s,b)=\tilde f_{Pedestrian\;hurt}(\tilde f_{Hit\;pedestrian}(s,b))\]
+for the given sub-actions $s\in Steer=[-90,90]$ and $b\in Break=\{0,1\}$ that the actor chooses. A causal describes that this is the functional dependency relation between the variables, but a \textit{causal model} will specify the exact functional relations. For example, for figure \ref{fig:causaldiagramexplanation}, we might define $hp=\tilde f_{Hit\;pedestrian}(s,b)= \begin{cases}
+0\quad & \text{if }b=1 \text{ or } s<-45\\
+1\quad & \text{if otherwise }
+\end{cases}$, and $\tilde f_{Pedestrian\;Hurt}(hp)=hp$, to describe that the car will hit the pedestrian if it does not break or steer sharply leftward, and that the pedestrian will get hurt if the car hits it. We summarize this notation for convenience before defining \textit{causal structure} and \textit{causal model} formally:
+
+\begin{notation*}
+	We will write $f_i$ or $f_{O_i}$ (without a tilde), for the ``total" effect of an action $a$ on the outcome. This is simply the $i$'th index of the $f$ that we have introduced in section \ref{sec:model:singlesignalsingleaction}. We write $\tilde f_i$ or $\tilde f_{O_i}$ (with a tilde), for the ``direct" effect. 
+\end{notation*}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.7\linewidth]{"images/diagramexplanations/causaldiagramexplanation2"}
+	\caption{\rightskip=20pt\leftskip=20pt \textit{Informal example causal diagram.} The same example as in figure \ref{fig:causaldiagramexplanation}, but in a different state of the world. In this state of the world, there is no pedestrian in sight. Hence, no matter what action the actor takes, it cannot hit or hurt any pedestrians.
+	}
+	\label{fig:causaldiagramexplanation2} 	
+\end{figure}
+
+The family of functions $\tilde f$ (one function for each sub-outcome) forms a ``functional causal model" \citep{Pearl2000}. 
+
+We can visualize causal structures and models as ``causal graphs" as in figure \ref{fig:1-causalstructure} \citep{Pearl2000}. There are many alternative ways to represent causal relations graphically to the one chosen here \citep{Dawid2002}. We use the notation of ``causal influence diagrams", where action nodes are represented as squares, and non-action nodes (nodes representing outcome variables in our case) represented as circles \citep{Howard1981}.\footnote{The analysis of the agent's environment in terms of causal structures, and causal influence diagrams is not new to machine learning. See for example \citep{Everitt2019}. } However, for our purposes we will interpret a causal diagram not as representing a probability distribution as is common \citep{Howard1981,Dawid2002,Everitt2019}, but as representing a deterministic functional model in a state of the state $\omega$, as described in section \ref{sec:causal:structuresandmodels}. We can thus annotate the causal diagram with functions to specify the exact causal model in a state $\omega$ as in figure \ref{fig:2-causalmodel}. 
+
+
+
+We formalize this by using the definitions of ``causal structure" and ``causal model", with only slight adaptations for our purposes, from \citet{Pearl2000}:
+
+
+
+
+\begin{definition} [Causal structure] \label{def:causalstructure}
+	A causal structure $D$ of a tuple of sub-action sets $\mathcal A=\{A_1,...,A_n\}$ and sub-outcome variables $\mathcal O=\{O_1,...,O_m\}$, is a directed acyclic graph (DAG) where each node corresponds to a distinct variable in $V=\mathcal A\cup \mathcal O$, where each link will be used in definition \ref{def:causalmodel} to represent a direct functional relationship among the corresponding variables, and where there are no incoming links to any of the variables in $\mathcal A$. The ``parent nodes" $P_D(O_i)$ of $O_i$ will denote the set of variables from which there are incoming links to $O_i$.
+\end{definition}
+
+We will call the links in a causal structure ``causal links". 
+
+\begin{definition} [Causal model]\label{def:causalmodel}
+	A causal model is a tuple $(D,\tilde f)$ where $D$ is a causal structure of $\mathcal A$ and $\mathcal O$, and $\tilde f$ is a family of functions representing certain functional relationships between the variables $V=\mathcal A\cup\mathcal O$, such that it is compatible with $D$: For each variable $O_i\in \mathcal O$, we have a function $\tilde f_{O_i}\colon P_D(O_i)\to O_i$.
+	
+	In state $\omega$, a causal model $(D^\omega,\tilde f^\omega)$ represents $f^\omega$ if the composition of the family of functions $\tilde f^\omega$ is equal to $f^\omega$: Given some $a\in A$, if for each $i$ we let $o_i=f_{O_i}(a)$, then $o_i=\tilde f_{O_i}(p(O_i))$, where $p(O_i)\in P_D(O_i)$ is the projection of $(a,x)$ onto $P_D(O_i)$.\footnote{Note that if for some variable $X$, $P_D(X)=\emptyset$, then $\tilde f_X$ is a ``$0$-ary" function, i.e. a constant. We could alternatively have explicitly defined ``exogenous" variables at the cost of additional complexity.} 
+\end{definition}
+
+
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}[t]{0.5\textwidth}\ContinuedFloat*
+		\centering
+		\captionsetup{labelfont=bf,font=small,labelsep=period}
+		\includegraphics[width=0.7\linewidth]{"images/diagramexplanations/1-causalstructure"}
+		\caption{\rightskip=10pt\leftskip=10pt A \textit{causal structure} is a graph that describes how the sub-outcomes depend on each other and on sub-actions. Squares enclose sub-action sets, circles enclose sub-outcome sets (outcome variables). This diagram implies: $x=\tilde f_X(a_1),y=\tilde f_Y(a_2,x),z=\tilde f_Z(y)$, for some family of functions $\tilde f$.}
+		\label{fig:1-causalstructure}
+	\end{minipage}\hfill
+	\begin{minipage}[t]{0.5\textwidth}\ContinuedFloat
+		\centering
+		\captionsetup{labelfont=bf,font=small,labelsep=period}
+		\includegraphics[width=0.7\linewidth]{"images/diagramexplanations/2-causalmodel"}
+		\caption{\rightskip=10pt\leftskip=10pt A \textit{causal model} is a further specification of a causal structure. It gives the exact functional relations between the variables, and can be written by annotating the links with functions. Unless stated otherwise this means the functions combine additively. This diagram implies that $x=g(a_1),y=h(a_2)+k(x),z=m(y)$.}
+		\label{fig:2-causalmodel}
+	\end{minipage}\hfill
+\end{figure}
+
+
+
+
+We will usually start out with a causal model for each state $\omega$, and \textit{define} $f$ to be the composition of that causal model, and will speak of \textit{the} causal model representing $f$.
+
+
+\begin{notation*}
+	Consistent with notation used e.g. by \citet{Mas-Colell1995}, we will sometimes use the abbreviation $p_{-a}$ to represent the tuple $p$ except $a$. That is, we will abbreviate $\tilde f_{O_i}(p_1,...,a,...,p_n)$ as $\tilde f_{O_i}(a, p_{-a})$. We will similarly abbreviate $\{O_k\in P_D(O_i)|O_k\neq O_j\}$ as $P_D(O_i)_{-O_j}$.
+\end{notation*}
+
+\subsubsection{Knowledge of causal models} \label{sec:causal:knowledge}
+
+The central mechanism described in this paper is based on the assumption that the actor and selector have asymmetric information and bounded rationality. In particular, the actor will have a less complete knowledge of the causal model after observing signal $\theta$, than the selector would if the selector could observe $\theta$. The selector will never actually make this observation, but will reason about what the observation \textit{would} imply, in order to choose the utility function $U$ that it will program into the actor.
+
+\indent We formalize this asymmetric information by assuming that the actor and selector have different knowledge of the causal model, given information $I_A,\theta_i$ and $I_S,\theta_i$ respectively. 
+\begin{wrapfigure}{r}{8cm}\ContinuedFloat
+	\centering	\includegraphics[width=0.7\linewidth]{"images/diagramexplanations/3-unknowncausalmodel"}
+	\captionsetup{labelfont=bf,font=small,labelsep=period,singlelinecheck=off}
+	\caption{\rightskip=10pt\leftskip=10pt An actor with information set $I_A,\theta$ may have only partial information about the model. Dotted lines indicate that this agent does not know causal relations between the variables $X,Y,Z$. Using lemma \ref{lemma:noknowncauseimpliesexogenousvariable}, the agent knows $x=g(a_1)+u_x,y=h(a_2)+u_y,z=u_z$ for exogenous $u_x,u_y,u_z$.}
+	\label{fig:3-unknowncausalmodel}
+\end{wrapfigure}
+\indent For example, if the actor of a self-driving car is unable to observe given a signal $\theta_i$ whether there is a pedestrian in view, then it won't be able to distinguish between the causal graphs in figure \ref{fig:causaldiagramexplanation} and \ref{fig:causaldiagramexplanation2} respectively, but the selector \textit{would} be able to distinguish them, were it to observe the signal.
+
+
+
+We will say that a causal model is consistent with information $I\subseteq \Omega$, if there is a state of the state $\omega\in I$ such that $f^\omega$ is represented by that causal model. Similarly, we say that a causal structure is consistent with $I$ if there is some causal model with that causal structure that is consistent with $I$. 
+
+For simplicity, in our examples we will consider the case where the players have no information at all about a certain causal link:
+
+
+\begin{definition} [No known causal relation]
+	We say that an agent with information set $I$ knows no causal relation between variables $X$ and $Y$, if for any causal structure $D$ that is consistent with $I$, whenever $X\in P_D(Y)$, we have that $\mathbb P[\tilde f_Y(x,p(Y)_{-X})=y|I,D]=\mathbb P[\tilde f_Y(x,p(Y)_{-X})=y|I,D,\tilde f_W]$ where $W=\mathcal O-\{Y\}$ and that this does not depend on $x$, and similarly for whenever $Y\in P_D(X)$.
+\end{definition}
+
+
+We will use a lemma that will simplify the analysis in the examples in section \ref{sec:causal:examples}. This will mean that we can simply treat the ignorance of a player about a causal link as an ``exogenous variable", so that we only have to explicitly consider a fewer causal models.
+
+\newcommand{\noknowncauselemma}{An actor that knows no causal relation between $X$ and $Y$ behaves as if it knows that there is no causal relation between $X$ and $Y$, and that there are exogenous random variables $u_X,u_Y$ influencing $X$ and $Y$. %Moreover, these variables are conditionally independently distributed with eachother and with the causal model. 
+}
+\begin{lemma}[Unknown causal relations as exogenous variables]\label{lemma:noknowncauseimpliesexogenousvariable}
+	\noknowncauselemma
+\end{lemma}
+
+
+
+The formal proof is technical due to ``bookkeeping" required for the different causal links, so we leave it in the appendix. However the idea is conceptually simple: For any possible causal model consistent with the actor's information in which there is a link from $X$ to $Y$, we can construct a new causal model where simply select an arbitrary variable $\tilde x\in X$, and define $\tilde f_Y'$ in this new causal model as equal to $\tilde f_Y$ in the original one, except we force the parameter $x=\tilde x$. This removes the connection between $X$ and $Y$, but due to the actor's ignorance about this connection, it does not change the actor's probability distribution over outcomes. 
+	
+In the examples we will usually assume the causal effects combine additively, so that $\tilde f_Y(p(Y))=g(p(Y)_{-X})+h(\tilde x)$. $h(\tilde x)$ is then a random variable that does not depend on any of the variables in $\mathcal O$ and hence is ``exogenous". We will use the notation $u_X$ for $h(\tilde x)$. Similarly we have $u_Y$ from the models in which there is a causal link from $Y$ to $X$.
+
+
+
+We will then have \textit{distributions} over such causal models depending on the knowledge of the actor and selector as in section \ref{sec:causal:knowledge}. We will thus specify this knowledge graphically: The knowledge that the players have over the causal model can be derived completely from these diagrams as in figure \ref{fig:3-unknowncausalmodel}. Representing such distribution over causal models symbolically based on the diagram is simplified by lemma \ref{lemma:noknowncauseimpliesexogenousvariable}. 
+
+
+
+
+\begin{comment}
+	\begin{wrapfigure}{r}{9cm}
+	\begin{minipage}{0.45\linewidth}
+	\includegraphics[width=1\linewidth]{"images/diagramexplanations/3-unknowncausalmodel"}
+	\end{minipage}\hfill
+	\begin{minipage}{0.55\linewidth}\ContinuedFloat
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\caption{An actor with information set $I_A,\theta$ may have only partial information about the model. Dotted lines indicate that this agent does not know causal relations between the variables $X,Y,Z$. Using lemma \ref{lemma:noknowncauseimpliesexogenousvariable}, the agent knows $x=g(a_1)+u_x,y=h(a_2)+u_y,z=u_z$ for exogenous $u_x,u_y,u_z$. }
+	\label{fig:3-unknowncausalmodel}	
+	\end{minipage}
+	\end{wrapfigure}
+\end{comment}
+
+
+\begin{comment}
+
+	\begin{wrapfigure}[H]
+	\begin{minipage}{0.32\textwidth}\ContinuedFloat
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=1\linewidth]{"images/diagramexplanations/3-unknowncausalmodel"}
+	\caption{An actor with information set $I_A,\theta$ may have only partial information about the model. Dotted lines indicate that this agent does not know causal relations between the variables $X,Y,Z$. Using lemma \ref{lemma:noknowncauseimpliesexogenousvariable}, the agent knows $x=g(a_1)+u_x,y=h(a_2)+u_y,z=u_z$ for exogenous $u_x,u_y,u_z$. }
+	\label{fig:3-unknowncausalmodel}
+	\end{minipage}
+	\end{wrapfigure}
+
+\end{comment}
+
+
+
+
+\begin{comment}
+TO EXPLAIN
+1. how f can be represented as a causal graph in some situations. 
+2. definition of causal model
+3. explanation that for any $\theta$, the selector and actor have a distribution over the correct causal model.
+4. explanation of diagrams. 
+\end{comment}
+
+
+
+
+
+
+

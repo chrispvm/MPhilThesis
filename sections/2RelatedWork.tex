@@ -1,0 +1,126 @@
+\section{The Main Idea} \label{sec:existingwork}
+
+\noindent In this paper I will propose to model machine learning systems not as monolithic (black box) entities that take actions to maximize a utility-, or reward function, but as consisting of two entities in a \textit{principal-agent} relation: The principal will be is what \citeauthor{Russell2010} call the learning element (we call it the \textit{selector}), and the agent will be what they call the performance element (we call it the \textit{actor}) \citeyearpar{Russell2010}. This is a nonstandard view: machine learning systems are generally modeled as agents that choose actions to maximize their reward function. But there is incidentally quite a close analogy with agency theory as applied to owner-manager, or manager-worker relations \citep{Stiglitz1989}: According to the neoclassical view of firms, firms are modeled as monolithic (black box) profit maximizers. That is, we don’t look at the internal relations between owners, managers, and workers, but consider them a monolithic coherent entity working in the interest of the owners. Then, economists started studying the internal relations of the owners, managers and workers in order to understand how such imperfections as imperfect information, incontractibility, bounded rationality, and so forth, resulted in the \textit{agency problems}, and the firm’s behavior deviating from profit maximization \citep{Ross1973,Williamson1975,Jensen1976, Fama1980}. In this paper I analogously propose to model the interaction between the two elements of a machine learning system as an agency relationship.
+
+
+
+
+
+
+
+
+\subsection{Existing work: Machine Learning Agents as Reward Maximizers}\label{sec:existingwork:ML}
+
+
+First, we give a background on machine learning agents. The essential difference between machine learning, and classical approaches to AI (and software development more broadly), is that humans do not directly write an algorithm that they want \citep{Russell2010}. Rather, they write a “middle man” algorithm, a so-called \textit{learning algorithm}, which will then automatically develop the desired final algorithm, which also in this context is called the \textit{learned algorithm}. This approach has allowed machine learning researchers to develop (learned) AI algorithms that humans simply do not know how to write themselves, either because they don’t understand the task, or because the desired algorithm is too complex for a human to understand. For example, while we have a rough understanding of how the brain processes visual information, we don’t exactly understand the details of how each signal is processed or why \citep{Goodfellow2016}. A human can \textit{intuitively} drive a car, but they would not know how to write a program that captures every minute detail of how they moves their muscles, and her eyes, and so forth.
+
+
+
+
+By programming a learning algorithm, we have been able to automate the development of intelligent algorithms. This has resulted in intelligent algorithms that solve complex tasks despite the human programmers not knowing how they do it. These algorithms even outperform humans at difficult tasks that are outside the scope of classical (human-programmed) software, such as correctly recognizing objects from an image, and defeating human players at complex board games like Go \citep{Silver2016,Silver2017}, and even real-time strategy games with incomplete information such as StarCraft II \citep{Vinyals2017,alphastarblog2019} and Dota 2 \citep{OpenAI2018}. 
+ 
+ Another example is that car companies have started to train AI agents to control the movement of cars \citep{Hodges2019}.\footnote{The process of developing these algorithms is called “training”, and works by repeatedly giving the learned algorithm sample inputs and seeing what outputs (decisions) the learned algorithm produces \citep{Goodfellow2016}. The learning algorithm then adjusts the learned algorithm in order to improve the score of its outputs on an objective function that the humans specified.}
+
+A central model for such artificially intelligent systems is that of an \textit{intelligent learning agent}, or \textit{machine learning agent} \citep{Russell2010}.\footnote{This term more specifically applies in the context of “reinforcement learning”. See for example \citep{Sutton1998} for details.} The machine learning agent consists broadly speaking of two \textit{elements} that compute their own separate algorithms: The learning element, which computes a learning algorithm, and the performance element, which computes a learned algorithm. The machine learning agent is thought of as having a \textit{goal}, specified in the form of a reward function and \textit{trying} to get better at achieving this goal, by learning from its experience. The learning element is thus generally considered to be \textit{part of} the agent. 
+
+The performance element's task is to compute a \textit{policy function}, or \textit{policy}. This is a function that takes as input information from the environment, and outputs actions. In the case of a self-driving car, the performance element takes as input camera images, and outputs a steering direction and so forth. The learning element's task is to change the performance element, based on past information. We can summarize this by saying that the learning agent chooses a policy (i.e. actions) to maximize its expected reward:
+\begin{quote}
+	\textbf{Machine learning agents as choosing a \textit{policy} to maximize reward} : It is standard to model machine learning agents as choosing \textit{actions}, or \textit{policies}, to maximize their expected reward, conditional on their observed informaion. Learning consists of improving the approximation to the optimal policy by obtaining and using more information (training data):\footnote{Reward denotes here discounted future reward. Moreover, often this formula is instead stated in terms a value function $V_\pi=R(\pi(s_t))+\delta \mathbb E[V_\pi(s_{t+1})]$. \textit{Reinforcement} learning agents are then seen as trying to optimize this value function by choosing a policy. Deviation from the optimum is considered an ``approximation error" \citep{Kaelbling1996,Sutton1998,Sxepesvari2010}. } $$\max\limits_{\text{policy}} \mathbb E\left[\text{\;Reward(policy)}\;|\;\text{data}\;\right]$$
+\end{quote}
+
+
+
+
+This model is justified by the fact that machine learning algorithms \textit{literally} select (using an optimization algorithm) a policy algorithm in order to maximize a reward function.\footnote{In fact, it has been argued that while the model of utility maximizers was developed to describe human behavior, it is in fact much better suited to describe the behavior of machine learning systems \citep{Parkes2015}.} However, there is a discrepancy between thinking of machine learning agents as choosing a \textit{policy}, and the fact that they instead choose an \textit{algorithm that will compute that policy}. 
+
+There is a special case, a class of algorithms where choosing an algorithm is equivalent to choosing a policy, namely in the case of \textit{lookup-tables}: The learned algorithm that the performance element computes is in this case simply a table, that for each possible observation stores an action. The learning element then optimizes the action for each contingent observation individually.\footnote{Actually a far more common system is a so-called Q-table, which is only slightly more complicated, and the basic argument made here applies to these as well. See for example \citep{Sutton1998} for details.} The appropriate action is “learned” independently for each observation.
+
+However, look-up tables are only applicable to very simple problems. As soon as the set of observations becomes larger, it becomes completely computationally intractable to learn, and store a separate action for each possible contingency.\footnote{For example, a self-driving car could receive a visual input image of, conservatively, 256 by 256 pixels. This means it can in principle receive $10^{65536}$ possible inputs, and would have to store an action for each separately, which would require roughly $10^{65536}$ Gigabytes of data. To store this data requires a hard disk vastly larger than the size of the universe, and to learn each optimal action a time vastly longer than the age of the universe.} Apart from the very special and limited case of lookup-tables, learning algorithms always select not actions, but \textit{parameters for an algorithm} (the learned algorithm) that will compute those actions.\footnote{Most advances in recent years have been through the application of “deep learning”, where the parameters describe computations in a “deep neural network” \citep{LeCun2015}. See for example \citep{Goodfellow2016} for an introduction.}
+
+\begin{quote}
+	\textbf{Machine learning systems choose \textit{algorithms} to maximize reward} : Closer to the reality of machine learning is the model that a learning element chooses an \textit{algorithm} that will compute the policy, rather than the policy itself. It is standard to think of this as meaning that the machine learning agent merely chooses \textit{approximation} of the optimal policy, since there may not be an algorithm for the true optimal policy.
+	$$\max\limits_{\text{algorithm}} \mathbb E\left[\text{\;Reward(policy(algorithm))}\;|\;\text{data}\;\right]$$
+\end{quote}
+
+
+This means that to model machine learning systems as choosing \textit{policies} or \textit{actions} to maximize their reward is merely an \textit{abstraction}. This may in many situations be a fairly good and descriptive abstraction, just as it is often a good abstraction to think of firms as black box profit maximizers \citep{Hart1989}. The model may, in particular, be a good abstraction to the extent that the algorithm is ``similar" to a look-up table, or to the extent that the learning algorithm can use a large amount of data.\footnote {See \citep{Hubinger2019} for a discussion on this.} In this case, we might model the learning algorithm as selecting an “approximation” to the optimal policy, and abstract away from the fact that what it selects is not a \textit{policy} but an \textit{algorithm that computes} the policy.\footnote{It is standard to view the fact that learning algorithms are constrained by having to select algorithms (or parameters) rather than the policies themselves as meaning that there is an ``error" in the chosen policy, but that they should still in the abstract be modeled as choosing policies. This assumption seems to apply to most models of reinforcement learning agents for example \citep{Sutton1998,Kaelbling1996, Sxepesvari2010}. I do not argue that this is wrong, but that it is an abstraction that in this paper we move away from. }
+
+However, it is arguable that the abstraction becomes less and less accurate as the learned algorithm consists of complex processes that do not at all resemble look-up tables, and to the extent that the learned algorithm \textit{generalizes} from a small amount of data. For example, recent advances in reinforcement learning have developed learned algorithms that first use complex subroutines to develop “plans”, and use those plans to then take actions. In such systems, there are in fact two optimizers: The learning element selects an \textit{algorithm} for the performance element to optimize the reward function, and then the performance element uses this algorithm to select a \textit{plan} to optimize the utility \citep{Srinivas2018, Li2017}. In other work, we have called such a phenomenon \textit{learned optimization} (or more specifically \textit{mesa optimization}) \citep{Hubinger2019}. If one wishes to model such a system as a monolithic utility maximizer, it is not at first obvious what its utility function would be. Would it be the learning element's (the selector's) utility function, or the performance element's (the actor's) utility function?
+
+The idea of modelling machine learning systems as utility maximizers has been criticized before. For example, \cite{Drexler2019}, and \cite{Hubinger2019} point out that we can simply “turn off” the learning algorithm and run the learned algorithm independently.\footnote{In fact, this is standard practice in many applications. An example is self-driving cars, where the learning algorithm is usually located in a remote server. } The learning element is not necessary for the machine agent to function competently once the algorithm of the performance element has been determined, and keeping it activated is entirely optional \citep{Drexler2019}. We can (and may have to) place the machine agents in new environments about which the learning algorithm never had any data. In these new environments, the actions that the performance element (actor) takes may no longer be optimal with respect to the reward function that was used to create the algorithm. But as we have point out in other work, it may still be optimal with respect to the objective function of the performance element (actor) \citep{Hubinger2019}. 
+
+The model of machine agents as choosing policies to maximize their reward, and learning to improve their policies, may be a good and useful abstraction depending on the context. However, I suggest a different model, namely model machine learning systems as two separate entities: The selector (the learning element, or learning algorithm), and the actor (the performance element). We think of the selector as selecting an algorithm for the actor, which the actor then uses to compute the policy. 
+
+
+
+
+
+
+\subsection{Selector and Actor: A Principal-Agent Problem}\label{sec:existingwork:selectorandactor}
+
+Modeling machine learning systems as monolithic agents that choose their actions to maximize their reward function $U_S$ is an abstraction. There is nothing in principle wrong with an abstraction like this. We need abstractions to think about and predict what machine learning systems will do without getting bogged down in details of specific machine learning algorithms. But as the analysis in the previous section shows, this abstraction is somewhat coarse grained. In this paper, I propose a more fine grained abstraction. I will state the model formally in section \ref{sec:model}.
+
+We will think of the learning algorithm together with the reward function $U_S$ that the humans gave it, as the \textit{principal}, and the artificially intelligent agent as the \textit{agent}.\footnote{There is a potentially confusing terminological coincidence with so-called \textit{actor-critic} methods in machine learning \citep{Peters2005}, it might be tempting to think of the selector as the \textit{critic}, and the actor as the \textit{actor}. However, in the case of an actor-critic method, \textit{both the actor and critic} are part of the actor in the sense we use here. They are both running at ``inference time", and can potentially be seen as what we have in earlier work called a \textit{mesa-optimizer} \citep{Hubinger2019}. However, this is the type of technical detail that we wish to abstract away from in this paper, by considering the actor to be a utility maximizing agent.} Moreover, to clarify the roles of these two, we will call them \textit{selector} and \textit{actor} respectively. The actor will have control over some set of actions, such as the virtual actions of a software agent, the physical actions of a robot, or in the self-driving car example, the actions of steering, breaking, etc. The selector does not directly choose the actions that the actor will take, but will select an algorithm (the learned algorithm, or agent program) that the actor will execute. 
+
+
+
+
+
+In analogy with human principal-agent problems, the \textit{algorithm} plays the role of the \textit{contract}: A human principal selects a contract from some restricted contract space, that will govern the behavior of its agent. Information asymmetry and bounded rationality will result in this contract being sub-optimal in some way. Similarly, the selector will select an algorithm from a restricted space, which will govern the behavior of its actor. And similarly, information asymmetry and bounded rationality may cause this algorithm to be sub-optimal.\footnote{We can thus envision an \textit{algorithmic agency theory}, or \textit{algorithmic contract theory} as compared to the classical human-based agency- and contract theory. %There is actually an analogy between contracts and algorithms in this sense, which I explore in the appendix.
+} 
+
+
+\begin{wrapfigure}{r}{8cm}
+	\begin{minipage}{0.4\linewidth}
+		\includegraphics[width=1\linewidth]{"images/conceptual-diagrams/human-selector-actor-box-01"}
+	\end{minipage}\hfill
+	\begin{minipage}{0.60\linewidth}
+		\captionsetup{labelfont=bf,font=small,labelsep=period}
+		\caption{\rightskip=10pt\leftskip=10pt The selector acts on behalf of the human, while the actor acts on behalf of the selector. The selector is a kind of ``middleman" because it is the actor's behavior that the human in the end cares about. 
+		}
+		\label{fig:causaldiagramexplanation} 	
+	\end{minipage}
+\end{wrapfigure}
+
+
+\begin{comment}
+	\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.2\linewidth]{"images/conceptual-diagrams/human-selector-actor-box-01"}
+	\caption{\rightskip=20pt\leftskip=20pt The selector acts on behalf of the human, while the actor acts on behalf of the selector. The selector is a kind of ``middleman" because it is the actor's behavior that the human in the end cares about. 
+	}
+	\label{fig:causaldiagramexplanation} 	
+	\end{figure}
+\end{comment}
+
+In particular, the space of algorithms is restricted in such a way that the selector cannot tell the actor what actions to take in any given contingent situation (as explained in section \ref{sec:existingwork:ML}). Instead, we will assume the opposite: The selector must \textit{delegate} decision making to the actor, and the algorithm will only specify the \textit{goal} that the actor must optimize, rather than the specific actions. Specifically, the selector will select a utility function $U_A$ for the actor, and the actor is unrestricted in optimizing this utility function (that is, the selector does not give it any constraints in doing so).\footnote{This type of \textit{delegation} can be seen as describing the delegation of optimization in the form of a so-called \textit{learned optimizer} or specifically, a \textit{mesa optimizer}, a concept we have introduced in previous work \citep{Hubinger2019}. There we discuss the technical reasons why such an algorithm would be incentivized to emerge in more detail.  } Thus, the algorithms that the selector can choose for the actor will be denoted by utility functions $U$, and we will simply say that the selector selects a utility function $U_A$.
+
+
+
+Note that there is here an important difference with human principal-agent relations: The actor does not have a pre-existing utility function, before the selector creates it. In fact, before the selector gives the actor an algorithm to run, it is unable to do or ``think" anything. In this sense, by selecting an algorithm, the selector \textit{creates} an AI agent.%\footnote{We discuss the differences between the selector-actor problem, and human-human principal agent problems in more detail in the appendix.}
+
+Based on the discussion in section \ref{sec:existingwork:ML}, we can informally identify the following informational constraints of the two decision makers:
+\begin{quote}
+	\textbf{Actor.} The actor will observe a signal from its environment, such as visual information from a camera. However, the actor does not have direct knowledge of the environment, and has a limited ability to decode its signal information and turn it into an accurate model of its environment. As a result, even if the signal it observes contains all the relevant information, the actor will have a limited understanding of the consequences of the actions it could take. 
+	
+	\textbf{Selector.} The selector does not observe the signal that the actor observes, but the selector has information about some subset of possible signals that it has from past observations, or that it can generate using simulations (the \textit{training data}). As a result, it has direct knowledge of (part of) the ground-truth that generated the signal, so that it has better information about the consequences of the actor's actions for those signals. However, the selector has a bounded ability to reason about signals about which it does not have data. As a result, it will not be able to select the optimal algorithm for those signals.   %However, the selector has its own bound on rationality: it is completely oblivious about the effect of the signals outside its training data, and because it can't .
+\end{quote}
+
+The method by which the selector learns an algorithm for the actor may be technically complex. In current machine learning systems it always involves ``testing out" what the actor would do in given situations. However, we wish to abstract from these kinds of details, and simply conceptualize the selector as ``trying to predict" what the actor will do once it deploys its algorithm. We thus consider the entire process of developing the actor's algorithm (training) as selecting an algorithm based on predictions what the actor will do once deployed. The selector and actor will play a two stage game:
+
+\begin{description}
+	\item \textbf{Stage 1} : The selector forms an expectation of the environment the actor will be in in stage 2, based on its prior information $I_S$, which may contain observations from past iterations of the same game, simulated environments, and so forth (training data). It then selects an algorithm for the actor to execute, such that it expects the actor to take actions that score high on its utility function $U_S$.\footnote{In this conceptualization, the entire training process can be seen as a making a ``prediction" about the actor's environment outside the training environment. In this framing, techniques of \textit{meta-learning} improve the selector's ability to generalize from training data \citep{Andrychowicz2018}. In this framing they can be seen as an attempt to improve the bounded rationality of the selector. }
+	
+	\item \textbf{Stage 2} : The actor is placed into an environment, receives signals from the environment, and takes actions. It might observe signals that the selector did not foresee, in which case the algorithm may not perform optimally given those signals (according to $U_S$). In particular, if the selector ``delegates" decision making to the actor as we will assume in this paper, then the algorithm says ``take actions to maximize a utility function $U_A$", and the chosen $U_A$ may not agree with $U_S$ on the optimal action, even if it agreed with $U_S$ in the selector's expectation. As a result, the actor may (intentionally) take an action that is against the interest of the selector and the human.
+\end{description}
+
+
+The central mechanism that emerges is as follows. The selector will choose a utility function $U_A$ for the actor, taking into account the actor's bounded rationality, i.e. the actor's lack of knowledge about the consequences of its actions. It will do this by ``integrating" the information that the actor lacks into the actor's utility function, given the selector's distribution over signals.\footnote{In the example in the introduction, the selector gives the actor the goal of preventing the car to hit yellow shapes, rather than the actual goal of preventing the car to hit pedestrians. } As a result, $U_A$ will deviate from $U_S$.
+	
+	Moreover, there may be many different $U_A$ that achieve an optimal outcome, \textit{even if} the actor has perfect information, as the result of the selector expecting only a limited subset of the signals that the actor could possibly observe. 
+
+
+
+
+

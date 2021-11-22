@@ -1,0 +1,365 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Aghion, Dewatripont \& Rey}{Aghion
+  et~al.}{2002}]{Aghion2002}
+Aghion, P., Dewatripont, M., \& Rey, P. (2002).
+\newblock {On Partial Contracting}.
+\newblock {\em European Economic Review}, {\em 46\/}(4-5), 745--753.
+
+\bibitem[\protect\citeauthoryear{Amodei, Olah, Steinhardt, Christiano, Schulman
+  \& Man{\'{e}}}{Amodei et~al.}{2016}]{Amodei2016}
+Amodei, D., Olah, C., Steinhardt, J., Christiano, P., Schulman, J., \&
+  Man{\'{e}}, D. (2016).
+\newblock {Concrete Problems in AI Safety}.
+
+\bibitem[\protect\citeauthoryear{Andrychowicz, Baker, Chociej,
+  J{\'{o}}zefowicz, McGrew, Pachocki, Petron, Plappert, Powell, Ray, Schneider,
+  Sidor, Tobin, Welinder, Weng \& Zaremba}{Andrychowicz
+  et~al.}{2019}]{Andrychowicz2019}
+Andrychowicz, M., Baker, B., Chociej, M., J{\'{o}}zefowicz, R., McGrew, B.,
+  Pachocki, J., Petron, A., Plappert, M., Powell, G., Ray, A., Schneider, J.,
+  Sidor, S., Tobin, J., Welinder, P., Weng, L., \& Zaremba, W. (2019).
+\newblock {Learning Dexterous In-Hand Manipulation}.
+\newblock Technical report, OpenAI.
+
+\bibitem[\protect\citeauthoryear{Andrychowicz, Denil, Colmenarejo, Hoffman,
+  Pfau, Schaul, Shillingford \& {De Freitas}}{Andrychowicz
+  et~al.}{2018}]{Andrychowicz2018}
+Andrychowicz, M., Denil, M., Colmenarejo, S.~G., Hoffman, M.~W., Pfau, D.,
+  Schaul, T., Shillingford, B., \& {De Freitas}, N. (2018).
+\newblock {Learning to learn by gradient descent by gradient descent}.
+\newblock In {\em 30th Conference on Neural Information Processing Systems
+  (NIPS)}, (pp.\ 1--9)., Barcelona.
+
+\bibitem[\protect\citeauthoryear{Baron \& Myerson}{Baron \&
+  Myerson}{1982}]{Baron1982}
+Baron, D.~P. \& Myerson, R.~B. (1982).
+\newblock {Regulating a Monopolist with Unknown Costs}.
+\newblock {\em Econometrica}, {\em 50\/}(4), 911.
+
+\bibitem[\protect\citeauthoryear{Bostrom}{Bostrom}{2014}]{bostrom2014}
+Bostrom, N. (2014).
+\newblock {\em {Superintelligence: Paths, Dangers, Strategies}}.
+\newblock Oxford: Oxford University Press.
+
+\bibitem[\protect\citeauthoryear{Dawid}{Dawid}{2002}]{Dawid2002}
+Dawid, A.~P. (2002).
+\newblock {Influence Diagrams for Causal Modelling and Inference}.
+\newblock {\em International Statistical Review}, {\em 70\/}(2), 161--189.
+
+\bibitem[\protect\citeauthoryear{Drexler}{Drexler}{2019}]{Drexler2019}
+Drexler, K.~E. (2019).
+\newblock {Reframing Superintelligence: Comprehensive AI Services as General
+  Intelligence}.
+\newblock Technical report, FHI.
+
+\bibitem[\protect\citeauthoryear{Eisenhardt}{Eisenhardt}{1989}]{Eisenhardt1989}
+Eisenhardt, K.~M. (1989).
+\newblock {Agency Theory: An Assessment and Review}.
+\newblock {\em The Academy of Management Review}, {\em 14\/}(1), 57--74.
+
+\bibitem[\protect\citeauthoryear{Everitt, Ortega, Barnes \& Legg}{Everitt
+  et~al.}{2019}]{Everitt2019}
+Everitt, T., Ortega, P.~A., Barnes, E., \& Legg, S. (2019).
+\newblock {Understanding Agent Incentives using Causal Influence Diagrams. Part
+  I: Single Action Settings}.
+\newblock {\em DeepM}.
+
+\bibitem[\protect\citeauthoryear{Fama}{Fama}{1980}]{Fama1980}
+Fama, E.~F. (1980).
+\newblock {Agency Problems and the Theory of the Firm}.
+\newblock {\em Journal of Political Economy}, {\em 88\/}(2), 288--307.
+
+\bibitem[\protect\citeauthoryear{Floreano \& Wood}{Floreano \&
+  Wood}{2015}]{Floreano2015}
+Floreano, D. \& Wood, R.~J. (2015).
+\newblock {Science, technology and the future of small autonomous drones}.
+\newblock {\em Nature}, {\em 521}, 460--466.
+
+\bibitem[\protect\citeauthoryear{Goodfellow, Bengio \& Courville}{Goodfellow
+  et~al.}{2016}]{Goodfellow2016}
+Goodfellow, I., Bengio, Y., \& Courville, A. (2016).
+\newblock {\em {Deep Learning}}.
+\newblock Cambridge, Massachusetts and London, England: The MIT Press.
+
+\bibitem[\protect\citeauthoryear{Hadfield-Menell \& Hadfield}{Hadfield-Menell
+  \& Hadfield}{2018}]{Hadfield-Menell2018}
+Hadfield-Menell, D. \& Hadfield, G.~K. (2018).
+\newblock {Incomplete Contracting and AI Alignment}.
+\newblock {\em Ssrn}.
+
+\bibitem[\protect\citeauthoryear{Hart}{Hart}{1989}]{Hart1989}
+Hart, O. (1989).
+\newblock {Incomplete Contracts}.
+\newblock In J.~Eatwell, M.~Milgate, \& P.~Newman (Eds.), {\em Allocation,
+  Information and Markets}  (pp.\ 163). London and Basingstoke: The Macmillan
+  Press Limited.
+
+\bibitem[\protect\citeauthoryear{He, Zhang, Ren \& Sun}{He
+  et~al.}{2015}]{He2015}
+He, K., Zhang, X., Ren, S., \& Sun, J. (2015).
+\newblock {Delving Deep into Rectifiers: Surpassing Human-Level Performance on
+  ImageNet Classification}.
+\newblock Technical report, Microsoft Research.
+
+\bibitem[\protect\citeauthoryear{Hodges, An, Rahmani \& Bennamoun}{Hodges
+  et~al.}{2019}]{Hodges2019}
+Hodges, C., An, S., Rahmani, H., \& Bennamoun, M. (2019).
+\newblock {Deep Learning for Driverless Vehicles}.
+\newblock In V.~Balas, S.~Roy, D.~Sharma, \& P.~Samui (Eds.), {\em Handbook of
+  Deep Learning Applications. Smart Innovation, Systems and Technologies, vol
+  136}  (pp.\ 83--99). Springer, Cham.
+
+\bibitem[\protect\citeauthoryear{Howard \& Matheson}{Howard \&
+  Matheson}{1981}]{Howard1981}
+Howard, R.~A. \& Matheson, J.~E. (1981).
+\newblock {Influence Diagrams}.
+\newblock {\em The Principles and Applications of Decision Analysis}.
+
+\bibitem[\protect\citeauthoryear{Huang, Kwiatkowska, Wang \& Wu}{Huang
+  et~al.}{2017}]{Huang2017}
+Huang, X., Kwiatkowska, M., Wang, S., \& Wu, M. (2017).
+\newblock {Safety Verification of Deep Neural Networks}.
+\newblock {\em arXiv}.
+
+\bibitem[\protect\citeauthoryear{Hubinger, van Merwijk, Skalse, Mikulik \&
+  Garrabrant}{Hubinger et~al.}{2019}]{Hubinger2019}
+Hubinger, E., van Merwijk, C., Skalse, J., Mikulik, V., \& Garrabrant, S.
+  (2019).
+\newblock {(To be published) Learned Optimization in Advanced Machine Learning
+  Systems}.
+\newblock {\em Machine Intelligence Research Institute}.
+
+\bibitem[\protect\citeauthoryear{Jensen \& Meckling}{Jensen \&
+  Meckling}{1976}]{Jensen1976}
+Jensen, M.~C. \& Meckling, W.~H. (1976).
+\newblock {Theory of the Firm: Managerial Behavior, Agency Costs and Ownership
+  Structure}.
+\newblock {\em 1Journal of Financial Economics}, {\em 3\/}(4), 305--360.
+
+\bibitem[\protect\citeauthoryear{Kaelbling, Littman \& Moore}{Kaelbling
+  et~al.}{1996}]{Kaelbling1996}
+Kaelbling, L.~P., Littman, M.~L., \& Moore, A.~W. (1996).
+\newblock {Reinforcement Learning: A survey}.
+\newblock {\em Journal of Artificial Intelligence Research}, {\em 4}, 237--285.
+
+\bibitem[\protect\citeauthoryear{LeCun, Bengio \& Hinton}{LeCun
+  et~al.}{2015}]{LeCun2015}
+LeCun, Y., Bengio, Y., \& Hinton, G. (2015).
+\newblock {Deep learning}.
+\newblock {\em Nature}, {\em 521\/}(1), 35.
+
+\bibitem[\protect\citeauthoryear{Leike, Krueger, Everitt, Martic, Maini \&
+  Legg}{Leike et~al.}{2018}]{Leike2018}
+Leike, J., Krueger, D., Everitt, T., Martic, M., Maini, V., \& Legg, S. (2018).
+\newblock
+\newblock {Scalable agent alignment via reward modeling: a research direction}.
+
+\bibitem[\protect\citeauthoryear{Li, Vinyals, Heess, Buesing, Racani{\`{e}}re,
+  Reichert, Weber, Wierstra \& Battaglia}{Li et~al.}{2017}]{Li2017}
+Li, Y., Vinyals, O., Heess, N., Buesing, L., Racani{\`{e}}re, S., Reichert, D.,
+  Weber, T., Wierstra, D., \& Battaglia, P. (2017).
+\newblock {Learning model-based planning from scratch}.
+\newblock {\em DeepMind}.
+
+\bibitem[\protect\citeauthoryear{Mas-Colell, Whinston \& Green}{Mas-Colell
+  et~al.}{1995}]{Mas-Colell1995}
+Mas-Colell, A., Whinston, M.~D., \& Green, J.~R. (1995).
+\newblock {\em {Microeconomic Theory}\/} (1 ed.).
+\newblock New York Oxford: Oxford University Press.
+
+\bibitem[\protect\citeauthoryear{Mnih, Kavukcuoglu, Silver, Graves, Antonoglou,
+  Wierstra \& Riedmiller}{Mnih et~al.}{2013}]{Mnih2013}
+Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra,
+  D., \& Riedmiller, M. (2013).
+\newblock {Playing Atari with Deep Reinforcement Learning}.
+\newblock In {\em NIPS Deep Learning Workshop}, (pp.\ 1--9).
+
+\bibitem[\protect\citeauthoryear{Mnih, Kavukcuoglu, Silver, Rusu, Veness,
+  Bellemare, Graves, Riedmiller, Fidjeland, Ostrovski, Petersen, Beattie,
+  Sadik, Antonoglou, King, Kumaran, Wierstra, Legg \& Hassabis}{Mnih
+  et~al.}{2015}]{Mnih2015}
+Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A.~A., Veness, J., Bellemare,
+  M.~G., Graves, A., Riedmiller, M., Fidjeland, A.~K., Ostrovski, G., Petersen,
+  S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran, D., Wierstra,
+  D., Legg, S., \& Hassabis, D. (2015).
+\newblock {Human-level control through deep reinforcement learning}.
+\newblock {\em Nature}, {\em 518\/}(7540), 529--533.
+
+\bibitem[\protect\citeauthoryear{OpenAI}{OpenAI}{2018}]{OpenAI2018}
+OpenAI (2018).
+\newblock {OpenAI Five}.
+
+\bibitem[\protect\citeauthoryear{Parkes \& Wellman}{Parkes \&
+  Wellman}{2015}]{Parkes2015}
+Parkes, D.~C. \& Wellman, M.~P. (2015).
+\newblock {Economic reasoning and artificial intelligence}.
+\newblock {\em Science}, {\em 349\/}(6245), 267--272.
+
+\bibitem[\protect\citeauthoryear{Pearl}{Pearl}{2000}]{Pearl2000}
+Pearl, J. (2000).
+\newblock {\em {Causality: Models, Reasoning, and Inference}}.
+\newblock New York: Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Pei, Cao, Yang \& Jana}{Pei
+  et~al.}{2017}]{Pei2017}
+Pei, K., Cao, Y., Yang, J., \& Jana, S. (2017).
+\newblock {Towards Practical Verification of Machine Learning: The Case of
+  Computer Vision Systems}.
+\newblock {\em arXiv}, 1--16.
+
+\bibitem[\protect\citeauthoryear{Peters, Vijayakumar \& Schaal}{Peters
+  et~al.}{2005}]{Peters2005}
+Peters, J., Vijayakumar, S., \& Schaal, S. (2005).
+\newblock {Natural Actor-Critic}.
+\newblock {\em Neurocomputing}, {\em 71\/}(7-9), 280--291.
+
+\bibitem[\protect\citeauthoryear{Rahwan, Cebrian, Obradovich, Bongard,
+  Bonnefon, Breazeal, Crandall, Christakis \& Couzin}{Rahwan
+  et~al.}{2019}]{Rahwan2019}
+Rahwan, I., Cebrian, M., Obradovich, N., Bongard, J., Bonnefon, J.-F.,
+  Breazeal, C., Crandall, J., Christakis, N.~A., \& Couzin, I.~D. (2019).
+\newblock {Machine behaviour}.
+\newblock {\em Nature}, {\em 568\/}(11), 26.
+
+\bibitem[\protect\citeauthoryear{Ross}{Ross}{1973}]{Ross1973}
+Ross, S.~A. (1973).
+\newblock {The Economic Theory of Agency: The Principal's Problem}.
+\newblock {\em The American Economic Review}, {\em 63\/}(2), 134--139.
+
+\bibitem[\protect\citeauthoryear{Russell}{Russell}{2015}]{Russell2015}
+Russell, S. (2015).
+\newblock {Take a stand on AI weapons}.
+\newblock {\em Nature}, {\em 521}.
+
+\bibitem[\protect\citeauthoryear{Russell \& Norvig}{Russell \&
+  Norvig}{2010}]{Russell2010}
+Russell, S. \& Norvig, P. (2010).
+\newblock {\em {Artificial Intelligence A Modern Approach}\/} (3 ed.).
+\newblock Pearson.
+
+\bibitem[\protect\citeauthoryear{Schmitz}{Schmitz}{2005}]{Schmitz2005}
+Schmitz, P.~W. (2005).
+\newblock {Allocating Control in Agency Problems with Limited Liability and
+  Sequential Hidden Actions}.
+\newblock {\em Rand Journal of Economics}, {\em 36\/}(2), 318--336.
+
+\bibitem[\protect\citeauthoryear{Schwab}{Schwab}{2016}]{Schwab2016}
+Schwab, K. (2016).
+\newblock {\em {The Fourth Industrial Revolution}}.
+\newblock Geneva: World Economic Forum.
+
+\bibitem[\protect\citeauthoryear{Schwarting, Alonso-Mora \& Rus}{Schwarting
+  et~al.}{2018}]{Schwarting2018}
+Schwarting, W., Alonso-Mora, J., \& Rus, D. (2018).
+\newblock {Planning and Decision-Making for Autonomous Vehicles}.
+\newblock {\em Annual Review of Control, Robotics, and Autonomous Systems},
+  {\em 1}, 187--210.
+
+\bibitem[\protect\citeauthoryear{Silver, Huang, Maddison, Guez, Sifre,
+  Driessche, Schrittwieser, Antonoglou, Panneershelvam \& Lanctot}{Silver
+  et~al.}{2016}]{Silver2016}
+Silver, D., Huang, A., Maddison, C.~J., Guez, A., Sifre, L., Driessche, G.
+  V.~D., Schrittwieser, J., Antonoglou, I., Panneershelvam, V., \& Lanctot, M.
+  (2016).
+\newblock {Mastering the game of Go with deep neural networks and tree search}.
+\newblock {\em Nature}, {\em 529}, 484--489.
+
+\bibitem[\protect\citeauthoryear{Silver, Hubert, Schrittwieser, Antonoglou,
+  Lai, Guez, Lanctot, Sifre, Kumaran, Graepel, Lillicrap, Simonyan \&
+  Hassabis}{Silver et~al.}{2017}]{Silver2017a}
+Silver, D., Hubert, T., Schrittwieser, J., Antonoglou, I., Lai, M., Guez, A.,
+  Lanctot, M., Sifre, L., Kumaran, D., Graepel, T., Lillicrap, T., Simonyan,
+  K., \& Hassabis, D. (2017).
+\newblock
+\newblock {Mastering Chess and Shogi by Self-Play with a General Reinforcement
+  Learning Algorithm}, 1--19.
+
+\bibitem[\protect\citeauthoryear{Silver, Schrittwieser, Simonyan, Antonoglou,
+  Huang, Guez, Hubert, Baker, Lai \& Bolton}{Silver et~al.}{2017}]{Silver2017}
+Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou, I., Huang, A., Guez,
+  A., Hubert, T., Baker, L., Lai, M., \& Bolton, A. (2017).
+\newblock {Mastering the game of Go without human knowledge}.
+\newblock {\em Nature}, {\em 550\/}(7676), 354--359.
+
+\bibitem[\protect\citeauthoryear{Soares, Fallenstein, Yudkowsky \&
+  Armstrong}{Soares et~al.}{2015}]{Soares2015}
+Soares, N., Fallenstein, B., Yudkowsky, E., \& Armstrong, S. (2015).
+\newblock {Corrigibility}.
+\newblock In {\em AAAI Workshops: Workshops at the Twenty-Ninth AAAI Conference
+  on Artificial Intelligence}, Austin. AAAI Publications.
+
+\bibitem[\protect\citeauthoryear{Spence}{Spence}{1973}]{Spence1973}
+Spence, M. (1973).
+\newblock {Job Market Signaling}.
+\newblock {\em The Quarterly Journal of Economics}, {\em 87\/}(3), 355.
+
+\bibitem[\protect\citeauthoryear{Spiegler}{Spiegler}{2016}]{Spiegler2016}
+Spiegler, R. (2016).
+\newblock {Bayesian Networks and Boundedly Rational Expectations}.
+\newblock {\em The Quarterly Journal of Economics}, 1243--1290.
+
+\bibitem[\protect\citeauthoryear{Spiegler}{Spiegler}{2019}]{Spiegler2019}
+Spiegler, R. (2019).
+\newblock {Can Agents with Causal Misperceptions be Systematically Fooled?}
+\newblock {\em Journal of the European Economic Association}, {\em 00\/}(0),
+  1--35.
+
+\bibitem[\protect\citeauthoryear{Srinivas, Jabri, Abbeel, Levine \&
+  Finn}{Srinivas et~al.}{2018}]{Srinivas2018}
+Srinivas, A., Jabri, A., Abbeel, P., Levine, S., \& Finn, C. (2018).
+\newblock {Universal Planning Networks}.
+\newblock {\em arXiv}.
+
+\bibitem[\protect\citeauthoryear{Stiglitz}{Stiglitz}{1989}]{Stiglitz1989}
+Stiglitz, J.~E. (1989).
+\newblock {Principal and Agent}.
+\newblock In J.~Eatwell, M.~Milgate, \& P.~Newman (Eds.), {\em Allocation,
+  Information and Markets}  (pp.\ 241). London and Basingstoke: The Macmillan
+  Press Limited.
+
+\bibitem[\protect\citeauthoryear{Sutton \& Barto}{Sutton \&
+  Barto}{1998}]{Sutton1998}
+Sutton, R.~S. \& Barto, A.~G. (1998).
+\newblock {\em {Reinforcement Learning: An Introduction}}.
+\newblock Cambridge {\&} London: The MIT Press.
+
+\bibitem[\protect\citeauthoryear{Sxepesvari}{Sxepesvari}{2010}]{Sxepesvari2010}
+Sxepesvari, C. (2010).
+\newblock {Algorithms for Reinforcement Learning}.
+\newblock {\em Synthesis Lecture on Artificial Intelligence and Machine
+  Learning}, 1--98.
+
+\bibitem[\protect\citeauthoryear{Taylor, Yudkowsky, Lavictoire \&
+  Critch}{Taylor et~al.}{2016}]{Taylor2016}
+Taylor, J., Yudkowsky, E., Lavictoire, P., \& Critch, A. (2016).
+\newblock {Alignment for Advanced Machine Learning Systems}.
+\newblock {\em Machine Intelligence Research Institute}, 1--25.
+
+\bibitem[\protect\citeauthoryear{Vinyals, Babuschkin, Chung, Mathieu,
+  Jaderberg, Czarnecki, Dudzik, Huang, Georgiev \& Powell}{Vinyals
+  et~al.}{2019}]{alphastarblog2019}
+Vinyals, O., Babuschkin, I., Chung, J., Mathieu, M., Jaderberg, M., Czarnecki,
+  W.~M., Dudzik, A., Huang, A., Georgiev, P., \& Powell, R. (2019).
+\newblock {AlphaStar: Mastering the Real-Time Strategy Game StarCraft II}.
+
+\bibitem[\protect\citeauthoryear{Vinyals, Ewalds, Bartunov, Georgiev,
+  Vezhnevets, Yeo, Makhzani, K{\"{u}}ttler, Agapiou \& Schrittwieser}{Vinyals
+  et~al.}{2017}]{Vinyals2017}
+Vinyals, O., Ewalds, T., Bartunov, S., Georgiev, P., Vezhnevets, A.~S., Yeo,
+  M., Makhzani, A., K{\"{u}}ttler, H., Agapiou, J., \& Schrittwieser, J.
+  (2017).
+\newblock {StarCraft II: A New Challenge for Reinforcement Learning}.
+\newblock {\em DeepMind}.
+
+\bibitem[\protect\citeauthoryear{Williamson}{Williamson}{1975}]{Williamson1975}
+Williamson, O.~E. (1975).
+\newblock {\em {Markets and Hierarchies}}.
+\newblock London: Collier Macmillan Publishers.
+
+\bibitem[\protect\citeauthoryear{Zhang, Vinyals, Munos \& Bengio}{Zhang
+  et~al.}{2018}]{Zhang2018}
+Zhang, C., Vinyals, O., Munos, R., \& Bengio, S. (2018).
+\newblock {A Study on Overfitting in Deep Reinforcement Learning}.
+
+\end{thebibliography}

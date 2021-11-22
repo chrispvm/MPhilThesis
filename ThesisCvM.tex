@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{theoremref}
+\usepackage{caption}
+\usepackage[a4paper, margin=3cm]{geometry}
+\usepackage[bottom]{footmisc}
+\usepackage{easy-todo}
+\usepackage{booktabs}% http://ctan.org/pkg/booktabs
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{wrapfig}
+%\usepackage{apacite}
+\renewcommand\theContinuedFloat{.\alph{ContinuedFloat}}
+
+\usepackage[longnamesfirst,authoryear]{natbib}
+\shortcites{Mnih2013,Mnih2015, Silver2016, Silver2017, Silver2017a, Amodei2016, alphastarblog2019, Vinyals2017, Andrychowicz2019, Rahwan2019, Srinivas2018, Li2017, Andrychowicz2018} % List here all references with 6 or more
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem*{notation*}{Notation}
+\newtheorem*{assumption*}{Assumption}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{postulate}{Postulate}
+\newtheorem{axiom}{Axiom}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{principle}{Principle}
+\newtheorem*{intuition*}{Intuition}
+\newtheorem*{remark*}{Remark}
+\newtheorem{question}{Question}
+\newtheorem*{question*}{Question}
+\newtheorem{example}{Example}
+\newtheorem{problem}{Problem}
+\newtheorem*{problem*}{Problem}
+\newtheorem{solution}{Solution}
+\newtheorem{argument}{Argument}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%opening
+\title{Creation of AI Agents as a Principal-Agent Problem}
+\author{Chris van Merwijk}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\makeatletter
+\let\runauthor\@author
+\let\runtitle\@title
+\makeatother
+\lhead{\runauthor}
+\rhead{\runtitle}
+
+\date{}
+
+
+
+
+
+
+
+
+
+\begin{comment}
+	\usepackage{stackengine}
+	
+	% Master's candidates who require the alternate title page (with candidate number and word count)
+	% must also un-comment and complete the following three lines:
+	\masterssubmissiontrue
+	\candidateno{933516}
+	\wordcount{28,815}
+	
+	% Uncomment the following line if your degree also includes exams (eg most masters):
+	%\renewcommand{\submittedtext}{Submitted in partial completion of the}
+	% Your full degree name.  (But remember that DPhils aren't "in" anything.  They're just DPhils.)
+	\degree{Master of Philosophy in Economics}
+	% Term and year of submission, or date if your board requires (eg most masters)
+	\degreedate{Trinity 2019}
+	
+\end{comment}
+
+
+
+
+
+
+\begin{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\maketitle
+
+
+\begin{abstract}
+	\noindent The \textit{alignment problem} is the problem of ensuring that artificially intelligent agents pursue goals that are aligned with those of humans. I formalize \textit{inner alignment} of machine learning systems as a principal-agent problem in which a boundedly rational \textit{selector} (the principal, a learning algorithm) delegates decision making to a boundedly rational \textit{actor} (the agent, e.g. a self-driving car) by endowing it with a utility function specified in an agent \textit{algorithm}. The algorithm plays the role of the contract in standard economic agency theory. The selector's imperfect prediction of what environments the actor will encounter, together with the actor's imperfect knowledge of the causal structure of those environments, will generally result in the actor's utility function being misaligned with that of the selector. The central concern is: how do we ensure that the actor's utility function is equivalent to the selector's, so that the actor acts in humans' interest also beyond the foreseen environments? I give simple conditions on the selector's and actor's knowledge of and control over the causal structure of the actor's environment, that incentivizes the selector to ``project" it's utility function on a set of \textit{proxy variables}, and leave it up to the actor to optimize them. Moreover, I give restrictive necessary and sufficient conditions under which the actor's utility function is necessarily equivalent to that of the selector, under no restrictions on the space of utility functions. My model illustrates how economists and computer scientists may work on an agency theory of machine learning systems to improve our understanding of the AI alignment problem.
+\end{abstract}
+
+
+\begin{comment}
+	\noindent"The alignment problem" is the problem of ensuring that artificially intelligent agents pursue goals that are aligned with those of humans. In the machine learning and artificial intelligence literature, these agents are often modeled as "monolithic" black-boxes that choose actions to maximize a "reward function" or "utility function". However, this paper proposes to instead model them as consisting of a principal and agent. The agent is the actual AI agent that takes actions in the world, and the principal is the "learning algorithm" that \textit{creates} the agent, by selecting an \textit{algorithm} for it to execute. For clarity, we call them "actor" and "selector" respectively. 
+	
+	Agency theory in economics asks "what type of contract does the principal give his agent?". Similarly, we will ask "what type of algorithm does the selector give its actor?" In this paper, we will consider the case where the selector fully "delegates" decision-making to the actor. The selector's problem is: "what utility function should the actor maximize?" Formalized this way, the problem is structurally similar to the "incentive contracting problem" between e.g. an employer and employee. This formalizes the so-called "inner alignment problem" as an agency problem: Due to asymmetric information and bounded rationality, the actor's utility function may be \textit{misaligned} with that of the selector. As a result, AI agents may be created that pursue goals that are different from those that humans specified for them. We propose that an agency-theory and contract-theory approach is used to complement the current primarily computer science perspective on this problem.
+\end{comment}
+
+\pagebreak
+
+\tableofcontents
+\pagebreak
+\input{"sections/1Introduction.tex"}
+\input{"sections/2RelatedWork.tex"}
+\input{"sections/3Model.tex"}
+\input{"sections/4ToyExamples.tex"}
+\input{"sections/5MainResult1.tex"}
+\input{"sections/6MainResult2.tex"}
+\input{"sections/7Conclusion.tex"}
+%\input{"8. Bibliography.tex"}
+\bibliographystyle{newapa}
+\bibliography{library}
+\input{"sections/9Appendix.tex"}
+
+
+
+\end{document}
+
+
+
+

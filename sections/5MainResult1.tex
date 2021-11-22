@@ -1,0 +1,144 @@
+\section{Results}
+
+We will present two main ``mechanisms" by which the actor can be misaligned from the selector. The first one is based primarily on the bounded rationality of the actor, and generalizes primarily example \ref{example:sideeffectalignment}. In terms of machine learning, this is about the computational and architectural constraints of the actor. The second one is based on the selector's limited information and bounded rationality. In terms of machine learning, this is about the limitations of the selector's dataset.
+
+ 
+\subsection{Main result: Proxy utility functions}\label{sec:mainresultproxy}
+%\section{Selector-Actor problem for unitary Rational Agent}
+In this section we present the main result of the paper. The result brings together the main ideas presented in the examples of section \ref{sec:causal:examples}: We give an optimal utility function $U^*$ for a general case, where $U^*$ is only defined on a subset of variables over which the actor has knowledge. We \textit{informally} call these ``proxy variables" and the resulting utility function the ``proxy utility function" in line with our earlier work \citep{Hubinger2019}, because it is defined not necessarily on the variables the selector actually cares about, but on those that happen to have a causal relation with them. 
+
+However, in order to present a clean result, the assumptions on the information of the actor are quite restrictive: We will assume that for any particular variable $O_i$, the actor either knows perfectly what the effects of its actions on $O_i$ are, or is perfectly ignorant about it. Moreover, we assume that the actor does not have more ``control" over the variables in some situations (i.e. for some $\theta$) than in others (we call this uniform control). If we didn't make this assumption, the selector could make use of correlations between the actor's level of control over the ``proxy variables", and the causal effects of the proxy variables, which would complicate the result. 
+
+The result is intended to conceptually clarify the mechanism by which the actor's utility function will be misaligned with $U_S$: Informally, the selector ``projects" its utility function as it is defined on the entire set of variables, onto the proxy variables, through its knowledge of the expected effect of those proxy variables on the other variables.
+
+We first state the definitions:
+\begin{comment}
+	Perhaps this should be the definition, and the next definition should be a lemma.
+	\begin{definition}[Perfect ignorance]
+	An agent is completely ignorant about outcome variable $Y$ if for any possible path from an sub-action set $A$ to $Y$, there is at least one link where he does not know the causal relation.
+	\end{definition}
+\end{comment}
+
+\begin{definition}[Perfect ignorance]
+	The actor has perfect ignorance about how to influence sub-outcome variables $\mathcal Y$ with $Y=\prod_{Y_i\in\mathcal Y}Y_i$, if their conditional distributions $\mathbb P[f_Y(a)=y|I_A,\theta]$ are independent of $\theta$ and $a$. 
+\end{definition}
+\begin{comment}
+
+\begin{proof}
+	Take an $Y$ such that there is no path from $A$ to $Y$
+\end{proof}
+
+
+\end{comment}
+
+
+\begin{definition}[Perfect information]\label{definition:perfectinformation}
+	The actor has perfect information about how to influence sub-outcome variables $\mathcal X$ if for all signals $\theta$, and all actions $a$, there is an $x\in X=\prod_{X_i\in\mathcal X}X_i$, such that $\mathbb P[f(a)=x|I_A,\theta]=1$. We then define $f^\theta(a)=x$.
+\end{definition}
+
+In figure \ref{fig:theorem1illustration} we have illustrated an example diagram where the actor has perfect information about variables $\mathcal X$ but perfect ignorance about variables $\mathcal Y$. The latter follows from lemma \ref{lemma:noknowncauseimpliesexogenousvariable}: Since the actor knows no causal connections from $\mathcal A$ or $\mathcal X$ to $\mathcal Y$, it will simply treat the variables in $\mathcal Y$ as being influenced by exogenous random variables. Hence it has no knowledge about how to influence those variables (it is perfectly ignorant about them). 
+
+\begin{definition}[Uniform control]
+	The actor has uniform control over a set of variables $\mathcal X$, if it has perfect information over $\mathcal X$, and there is a subset $X_C\subseteq X=\prod_{X_i\in \mathcal X}X_i$ such that $f_X^\theta(A)=X_C$ and is injective, for all $\theta\in \Theta_S$.
+\end{definition}
+
+Intuitively, uniform control captures the notion that the actor is ``consistently competent" (or consistently incompetent) at controlling the variables $\mathcal X$, rather than competent some of the time, and incompetent at other times. It means that the actor can always achieve the same outcomes for $X$, no matter the state of the world $\omega$ (or no matter the signal $\theta$). Consider a stylistic example: A robot is on a beach, and depending on the state of the world, it may either rain or not rain. Moreover, one of the outcome variables is ``does the robot get wet?" If the robot has an umbrella, then it has uniform control over this variable: If it rains, it can decide to get wet or not, by opening the umbrella or not. But if it does not rain, it also can decide to get wet or not, by jumping in the sea or not. No matter the state of the world, it has the same options with respect to this variable. Note that the robot \textit{also} has uniform control if it does not have an umbrella, and it always rains in every state of the world. In this case, the robot is forced to get wet, but is forced so ``uniformly", i.e. in all states. 
+
+Uniform control over outcome variables $\mathcal X$ is therefore a quite strict assumption and will mostly not be achieved perfectly in practice. While we do not consider this realistic, the notion may hold approximately in practice. Moreover, it can serve as a \textit{baseline} simple case.
+
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.4\linewidth]{"images/theorem-examples/theorem1illustration"}
+	\caption{\rightskip=20pt\leftskip=20pt  An example diagram for the assumptions in theorem \ref{theorem:generalizedsideeffectalignment} on the knowledge of the actor. The actor has perfect information about a subset $\mathcal X$ of sub-outcome variables, and perfect ignorance about another subset $\mathcal Y$ (since there are no known causal paths from sub-action nodes to sub-outcome nodes). Moreover the actor knows that $\mathcal Y$ does not directly depend on $A$.}
+	\label{fig:theorem1illustration} 	
+\end{figure}
+ 
+Before stating the main result, we give an intuition for it:
+\begin{intuition*}[for theorem \ref{theorem:generalizedsideeffectalignment}]
+	\textnormal {Theorem \ref{theorem:generalizedsideeffectalignment} will assume that the actor has uniform control over a set of sub-outcome variables $\mathcal Y$, but perfect ignorance about the other variables $\mathcal Y$. Intuitively, this means that it is as if the actor can essentially \textit{choose} a sub-outcome $(x_1,...,x_n)$, rather than choosing an action. Therefore, no matter what utility function $U$ is given to the actor, the actor will always make the same choice of $(x_1,...,x_n)$ (more precisely, will always randomize in the same way over such tuples). Hence, the selector, in choosing the utility function of the actor, can simply ignore all the causal structure between $\mathcal A$ and $\mathcal X$, because the actor ``will take care of it". On the other hand, the actor is perfectly ignorant about the causal effect of $\mathcal X$ on $\mathcal Y$, so the selector has to ``take care of it". So we have a \textit{division of labor}: The selector tells the actor what sub-outcomes in $X$ to aim for, taking into account the structure between $\mathcal X$ and $\mathcal Y$; And the actor decides what actions in $A$ to pick, based on the structure between $\mathcal A$ and $\mathcal X$. So the selector can simply ``project" its $U_S$ onto the variables in $\mathcal X$ to achieve the second-best.\footnote{The theorem thus gives a simple formalization within the context of this model, of what in earlier work we have called ``pre-computation" of proxy objectives \citep{Hubinger2019}.} }
+
+	\textnormal{Intuitively, this also illustrates why we need the uniform control assumption: If the actor had control in some situations and not in others, then the selector would have to take this into account, and think about how exactly the actor would have to optimize over the proxy variables. It could no longer just ``leave it to the actor". }
+\end{intuition*}
+
+
+
+We now state this formally as the first main result of our paper, and leave the proof in the appendix:
+
+\newcommand{\theoremgeneralizedsideeffectalignment}{
+Assume that the space of outcomes $\mathcal O=\mathcal X\cup \mathcal Y$ is split into ``proxy variables" $\mathcal X$ and other variables $\mathcal Y$ and letting $X=\prod _{X_i\in \mathcal X}X_i$ and $Y=\prod _{Y_i\in \mathcal Y}Y_i$, where $\mathcal Y$ causally does not depend directly on $A$.\footnote{Recall this means that $f(a)=\tilde f(f_X(a))=(f_X(a),\tilde f_Y(f_X (a)))$. } Also assume that the actor has perfect ignorance about $\mathcal Y$, and perfect information about, and uniform control over $\mathcal X$. Then it is optimal for the selector to give the actor the utility function $U^*$ that is a ``projection" of its own utility function onto the proxies $\mathcal X$:   
+\[U^*(x,y)=U^*_{X}(x)=\mathbb E[U_S(x,\tilde f_Y(x))|I_S].\]
+}
+\begin{theorem}[Optimal utility function]\label{theorem:generalizedsideeffectalignment}
+	\theoremgeneralizedsideeffectalignment
+	\begin{comment}
+		Assume that the space of outcomes is split into two sets of variables, $O=X\times Y$, where $Y$ depends almost-surely only on $X$. That is, $f(a)=\tilde f(f_X(a))=(f_X(a),f_Y\circ f_X (a) )$ almost-surely. Also assume that the actor has perfect information about $X$ and perfect ignorance about $Y$. Also assume that the $f_X^\theta(\mathcal A)=X_C$ for all $\theta$. Also assume that for any $x\in X_C$, and any $\theta$ there is only one $a$ such that $f^\theta_X(a)=x$. Then the utility function $U^*(o)=\mathbb E[U_S(x,f_Y(x))]|I_S]$ is optimal. 
+		%where $X=\prod_{i\in I}X_i$ and  $Y=\prod_{j\in J}Y_j$
+	\end{comment}
+\end{theorem}
+
+\begin{comment}
+The theorem can easily be generalized to situations where $X_C$ depends on $\theta$ but there are no $x$ that are in any $X_C$ for two $\theta$.
+\end{comment}
+\begin{remark*}
+	
+	\textnormal{This result gives a formalization of the main mechanism by which the actor is misaligned, as it was introduced informally in section $1$: The actor has bounded rationality, in the form of not being perfectly able to predict the consequences of its actions. The selector on the other hand, is able to predict these consequences for the set of signals $\Theta_S$ that it expects to see. Because of this, the selector will choose a misaligned utility function that ``incorporates" this information, to compensate for the bounded rationality of the actor. Note that the theorem states that the selector makes this choice on the basis of its predictions of the signal $\theta$. But because the selector itself is boundedly rational, in its ability to predict $\theta$, the true state of the world that the agent finds itself in may be very different from the selector's expectation, where the causal relation between $U_A$ and $U_S$ breaks down. The outcome for the human is that there is now an AI agent that pursues an objective that is different from the one that the human specified, and who will potentially take deliberate actions that turn out to be against the interest of the human, especially in situations that the selector didn't predict.}	
+	
+	
+	
+	
+	
+\end{remark*}
+
+
+
+\subsection{Illustrating proxy utility functions}
+To illustrate the theorem, we provide two examples. Firstly, we repeat example \ref{example:sideeffectalignment}, but solve it much more simply using theorem \ref{theorem:generalizedsideeffectalignment}.
+
+\medskip
+\noindent \textbf{Example \ref{example:sideeffectalignment}} (\textit{Repeated for convenience})\textbf{.} \textnormal{\examplesideffectalignment}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.7\linewidth]{"images/examples/1-sideeffect"}
+	\caption*{\rightskip=20pt\leftskip=20pt \textbf{Figure \ref{fig:side-effect-aligned}}  \textbf{(Example \ref{example:sideeffectalignment},} \textit{Repeated for convenience})\textbf{.} \examplesideffectalignmentfigurecaption}
+	%\label{} 	
+\end{figure}
+\begin{proof}[Solution]
+	Note that the actor has perfect information over $X$, perfect ignorance over $Y$, and has uniform control over $X$. The latter is true because the image of $\tilde f_X(A)$ is equal to $\{-1,1\}$ for both $\theta_1$ and $\theta_2$. Therefore, by theorem $\ref{theorem:generalizedsideeffectalignment}$, $U^*(x,y)=U^*_X(x)=\mathbb E[U_S(x,\tilde f_Y(x))|I_S]=\mathbb E[\tilde f_Y(x)|I_S]=x$. Hence, $U^*(x,y)=x$ is optimal.
+\end{proof}
+
+\begin{remark*}
+\textnormal{Note that the solution using theorem 1 gives the same utility function as our somewhat more elaborate reasoning in the original solution to the example. Moreover, the earlier reasoning used the fact that the selector has no uncertainty about the effect of $X$ on $Y$. The next example won't have this property.}
+\end{remark*}
+We now apply the result with a slightly more elaborate example:
+
+
+\begin{example}\label{example:theorem1example}
+	\textnormal	{Assume two sub-action sets $A_1,A_2=\{-1,1\}$, and $X_1,X_2,Y_1,Y_2=\{-3,-2,-1,0,1,2,3\}$, with $X=X_1\times X_2$ and $Y=Y_1\times Y_2$, and the causal structure given in figure \ref{fig:theorem1example}. Moreover let the selector's utility function be $U_S(x_1,x_2,y_1,y_2)=y_1\cdot x_2 + y_2$. 
+	}
+\end{example}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.7\linewidth]{"images/theorem-examples/theorem1example"}
+	\caption{\rightskip=20pt\leftskip=20pt \textbf{(Example \ref{example:theorem1example}).} The actor has perfect information about $X_1,X_2$ and perfect ignorance about $Y_1,Y_2$. Moreover, it has uniform control over $X_1,X_2$. Hence theorem \ref{theorem:generalizedsideeffectalignment} applies. }
+	\label{fig:theorem1example} 	
+\end{figure}
+\begin{proof}[Solution]
+	Firstly, note that clearly, the actor has perfect information about $X_1,X_2$, and perfect ignorance about $Y_1,Y_2$. Moreover, we can also show that the actor has uniform control over $X_1,X_2$: for $\theta=\theta_1,\theta_2$, we have that the image $f_X(A)$ is the same (namely $f_X(A)=\{-1,1\}$). This is easy to see: Since $\tilde f_{X_1}(a_1)$ gives $a_1$ given $\theta_1$ or $-a_1$ given $\theta_2$. whatever $\theta$ is, the actor can select $a_1\in A_1$ so as to choose $x_1\in \{-1,1\}$. Then similarly since $\tilde f_{X_2}(a_2,x_1)$ gives $a_2x_1$ or $-a_2x_1$, it can select $a_2$ to get $x_2$ from $\{-1,1\}$.
+	
+	Now we can apply theorem \ref{theorem:generalizedsideeffectalignment} (we pre-multiply by $2$ to get rid of the $0.5$ probabilities of the $\theta_i$): $U^*(x_1,x_2,y_1,y_2)=U^*_X(x_1,x_2)=2\cdot\mathbb E[U_S(x,\tilde f_Y(x))|I_S]=2\cdot\mathbb E[\tilde f_{Y_1}(x_1,x_2)\cdot x_2+
+	\tilde f_{Y_2}(\tilde f_{Y_1}(x_1,x_2),x_2)|I_S] =[(x_1+x_1x_2)x_2+(x_1+x_1x_2)-x_2]+[(-x_1+2x_1x_2)x_2-(-x_1+2x_1x_2)+2x_2]$. We can check that this simplifies to $U^*(x_1,x_2,y_1,y_2)=3x_1x_2^2+2x_1-x_1x_2+x_2$.
+\end{proof}
+
+
+\begin{remark*}
+	\textnormal{Informally, note that the utility function $U^*_A$ in example \ref{example:theorem1example} is more \textit{complex} than the original utility function $U_S$. Intuitively, the selector has \textit{integrated} its information about the causal relation between $\mathcal X$ and $\mathcal Y$ into the utility function $U_A^*$, thereby adding ``\textit{complexity}" to it.}
+\end{remark*}
+%\begin{remark*}
+	
+%\end{remark*}

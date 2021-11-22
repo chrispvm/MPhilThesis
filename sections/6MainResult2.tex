@@ -1,0 +1,175 @@
+
+
+
+
+
+\subsection{Uniqueness }\label{sec:revealedpreference}
+
+Theorem \ref{theorem:generalizedsideeffectalignment} provides one specific optimal utility function. It formalizes a ``mechanism" by which the utility function of the actor can be misaligned with that of the selector, as the result of the bounded rationality of the actor. However, we have already seen in example \ref{example:conditional-alignment} that there is another reason why the actor's utility function can be misaligned: There may be a ``redundancy" in the environment of the actor that causes it to obtain a utility function that is only ``partially" aligned. In other words, even if $U_S\in \mathcal U^*$, that is even if the actor is not impeded by bounded rationality to be aligned, then the actor may still be misaligned.
+
+We already explained why non-uniqueness is a problem, and why in general it is problematic for the human if the actor has a misaligned utility function: Due to the selector's imperfect foresight about the signals that the actor will receive, a utility function $U^*$ may be optimal given the selector's imperfect predictions, but not actually be optimal given the signal that the actor ends up observing. We therefore state the problem as follows:
+
+\begin{problem*}[Uniqueness]
+	Even if $U_S\in \mathcal U^*$, the selector might not set $U_A=U_S$, because there are many other (mis-aligned) $U\in\mathcal U^*$. While these $U$ perform optimally given the signals $\Theta_S$ that the selector expects, as soon as the actor observes a signal $\theta\notin\Theta_S$, this is no longer true, but the actor still pursues the misaligned $U$. What conditions do we need to guarantee that $U_S$ is unique in $\mathcal U^*$ (up to a preference-preserving transformation)?
+\end{problem*}
+
+Our uniqueness conditions will be very strict, and are analogous (but not equivalent) to a revealed preference condition: The selector needs to test the actor in various circumstances . Before we state our result, we give an example that will illustrate the idea in figure \ref{fig:evasionexample}. 
+
+
+\begin{example}\label{example:trivialuniqueness}
+	\textnormal{Consider the simple causal model in figure \ref{fig:evasionexample} where the actor has perfect information. The actor has one action set, $\text{Steering-Angle}=\{\text{left, middle, right} \}$, resulting in outcomes $O=\{ \text{evade-left, kill-pedestrian, evade-right}\}$ respectively. The selector's utility function is \[U_S(o)=\begin{cases}-100\quad &\text{if } o=\text{kill pedestrian}\\
+			0\quad &\text{if }o=\text{evade-left, or }o= \text{evade-right}\end{cases}\\
+		.\] }
+\end{example}
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=none}
+	\includegraphics[width=0.4\linewidth]{"images/theorem-examples/evasionexample"}
+	\caption{\rightskip=20pt\leftskip=20pt \textbf{ (Example \ref{example:trivialuniqueness}).} \textit{Non-uniqueness.} The selector strongly prefers the car to evade either left or right over killing the pedestrian. It would be nice if the actor would adopt this preference too. But this is not guaranteed, even for an actor with perfect information and a first-best utility function.
+	}
+	\label{fig:evasionexample} 	
+\end{figure}
+
+\begin{proof}[Solution]
+	We have two options for the actor to avoid killing the pedestrian: either evade left or evade right. The selector does not care which option the actor picks, so long as it does not kill the pedestrian. Consider a utility functions as follows:
+	\begin{align*}
+	U_A(o)=\begin{cases}
+	-100\quad &\text{if }o=\text{evade left}\\
+	0\quad &\text{if }o=\text{kill pedestrian}\\
+	1\quad &\text{if }o=\text{evade right}
+	\end{cases}
+	\end{align*} 
+	
+	An actor with this utility function has very different preferences from the selector. It would have been desirable if we could show that $U_A\notin \mathcal U^*$. That is, it would have been desirable if in this scenario, any $U\in \mathcal U^*$ would agree with the selector that killing the pedestrian is the worst outcome. However, the utility function $U_A$ as defined above, is in fact first-best: $\mathbb E[U_S(f(\pi_{U_A}(\theta_1)))|I_S]=\mathbb E[U_S(f(\text{right}))|I_S]=0$, which is a maximum.
+\end{proof}
+
+
+\begin{intuition*}[for theorem \ref{theorem:guaranteedalignment}]
+	\textnormal{The source of the misalignment problem in the example in figure \ref{fig:evasionexample} is that the actor has too much control. This would be less problematic if the selector required the actor's optimal choice set to coincide with its own. But recall from lemma \ref{lemma:firstbestpolicysetcondition} that the actor's policy set (if it results in a first-best policy) need only be a subset of, not necessarily equal to, the selector's policy set: $\Pi^*_{U_A}\subseteq \Pi_S^*$, since the selector only looks at whether the actor makes a good decision (in this case, steer right, rather than hit the pedestrian). Perhaps counter-intuitively, if the actor is ``consistently competent" then this \textit{increases} the opportunity for misalignment, since it increases the actor's access to such redundant options about which the selector is indifferent. } 
+\end{intuition*}
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.4\linewidth]{"images/theorem-examples/evasionexample2"}
+	\caption{\rightskip=20pt\leftskip=20pt \textit{Non-uniqueness.} An actor with utility function $U_A$ from the example in figure \ref{fig:evasionexample} would rather kill the pedestrian than evade left, despite acting optimally in a situation where it also had the option to evade right.
+	}
+	\label{fig:evasionexample2} 	
+\end{figure}
+
+
+
+We now state the definition of unique alignment,
+
+\begin{definition}[Weak alignment]
+	We have unique weak alignment if $U_S$ is unique in $\mathcal U^*$ up to preservation of strict preferences: 
+	\[\text{for all }U\in\mathcal U^*,\quad \quad \text{for all } o_1,o_2\in O, \quad U_S(o_1)<U_S(o_2) \text{ implies }  U(o_1)<U(o_2).\]
+\end{definition}
+
+
+
+\begin{comment}
+From the perspective of AI alignment however, this is a problem: It may cause the actor to make very different choices from what the selector would prefer in situations with high uncertainty, if the training phase did not contain such situations.
+\end{comment}
+
+
+It turns out that the only way to guarantee weak alignment, is by simply ``testing" the actor on every possible outcome. See figure \ref{fig:theorem2illustration}. This condition is obviously very strict, and this cannot reasonably be expected to hold in any non-trivial practical application. So we may interpret this as a kind of ``practical" impossibility result.\footnote{This result illustrates the problem of ``lack of training data" in the context of this model. } 
+
+\def\geqdot{\mathrel{<\kern-.65em\raise.01ex\hbox{$\boldsymbol{\cdot}$}}}
+\def\notgeqdot{\mathrel{\not <\kern-.65em\raise.01ex\hbox{$\boldsymbol{\cdot}$}}}
+\def\precdot{\mathrel{\prec\kern-.55em\raise.01ex\hbox{$\boldsymbol{\cdot}$}}}
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=period}
+	\includegraphics[width=0.7\linewidth]{"images/theorem-examples/theorem2illustration"}
+	\caption{\rightskip=20pt\leftskip=20pt Number the outcomes in $O$ as $o_1,o_2,...,o_n$ such that the ordering coincides with the order by which they are preferred by the selector. In order to guarantee weak alignment, the selector needs to ``test" the actor for every outcome and every outcome directly to the right of it. In order to know that $o_2$ and $o_3$ are preferred by the actor to $o_4$, there need to be two separate $\theta_i,\theta_j$ that induce the encircled outcomes as possible outcomes in $f^{\theta_{i,j}}(A)$. Those in the solid line must at least be in it, and those in the dotted line may, but don't have to. Therefore, these two sets ``test"  whether $U(o_2)>U(o_4)$, and whether $U(o_3)> U(o_4)$ etc. This would not work if $o_3$ was also in the set, because there needs to be a \textit{unique} maximimum.}
+	\label{fig:theorem2illustration} 	
+\end{figure}
+
+\newcommand{\theoremguaranteedalignment}{
+	Assume complete information. We have unique weak alignment if and only if for every outcome $o_1$, and every outcome $o_2$ that is directly dispreferred to $o_1$, there is a signal that gives the actor the option between $o_1,o_2$, and where $o_1$ is the unique available optimum for $U_S$.
+}
+\begin{theorem}[Unique alignment]\label{theorem:guaranteedalignment}
+	\theoremguaranteedalignment
+	
+	%	$o,\tilde o \in C_\theta$ and $o$ is the unique element in $\argmax_{o\in C_\theta}U_S(o)$.
+\end{theorem}
+
+\begin{remark*}
+	\textnormal{Theorem \ref{theorem:guaranteedalignment} looks similar to classical revealed preference theorems. However, the difference results from the fact that in order for the actor's utility function $U_A$ to be optimal, the set of actions over which it randomizes need merely be a subset, rather than identical to, the set of first-best actions, as we recalled from lemma \ref{lemma:firstbestpolicysetcondition}. Unlike in standard choice theory, the actor's utility function cannot be pinpointed up to \textit{monotonic transformation}. Rather, there will always be utility functions in $\mathcal U^*$ that are not monotonic transformations of $U_S$ (we state this as lemma \ref{lemma:agwstrictpref} in the appendix). This is because when the selector is indifferent between outcomes (as in figure \ref{fig:evasionexample}), this does not mean that the actor will also be indifferent. We leave the proof in the appendix.}
+\end{remark*}
+
+\begin{remark*}
+	\textnormal{Like theorem \ref{theorem:generalizedsideeffectalignment}, the assumptions of theorem \ref{theorem:guaranteedalignment} are not likely to hold (note that fulfilling the requirement requires the selector to predict almost as many signals as there are outcomes). However, it points to a \textit{type} of misalignment, as we've illustrated already in example \ref{example:trivialuniqueness}: Even if the actor is highly competent, and seems to optimize for the same objective function as the selector, this may be ``unstable", due to ``redundancies" in the environment.\footnote{This is not an unrealistic idea. Currently existing machine learning systems suffer from a similar, though not identical problem. For example, the decisions of self driving cars have been shown to be contingent on very ``weird" conditions: While the car may decide to turn right during a sunny day, it might suddenly decide to turn left when the sky is darker, even though the rest of the environment is the same, and even though it was not explicitly selected by the selector to have this preference  \citep{Pei2017,Huang2017}} }
+\end{remark*}
+
+We finally note that, for broadly the same reasons as discussed in the general perfect information case, the function $U^*$ in theorem \ref{theorem:generalizedsideeffectalignment} is not unique in $\mathcal U^*$. In fact, any utility function whose maximum in $X$ is contained in that of $U^*$:
+
+\newcommand{\propUstarnotunique}{Assume the assumptions of theorem \ref{theorem:generalizedsideeffectalignment} hold, and let $U^*$ be as defined therein. Then any $U$ such that $\argmax\limits_{x\in X_C}(U(x))\subseteq \argmax\limits_{x\in X_C}(U^*(x))$ is also in $\mathcal U^*$.}
+\begin{proposition}\label{prop:Ustarnotunique}
+	\propUstarnotunique
+\end{proposition}
+
+
+\newcommand{\theoremneverfullyaligned}{For any $U\in \mathcal U^*$ there is a $\tilde U\in \mathcal U^*$ that is not a linear transformation of $U$.}
+
+\begin{comment}
+
+	We have not been precise so far about when exactly $U$ is ``aligned" with $U_S$ and what it means for $U_S$ to be ``unique" in $\mathcal U^*$. One proposal would be that any $U_A^*\in \mathcal U^*$ is guaranteed to be a linear transformation of $U_S$, so that their preferences over lotteries are the same. However, we show immediately that this can at best only be achieved as an approximation:
+	
+
+	\begin{theorem}\label{theorem:neverfullyaligned}
+	\theoremneverfullyaligned
+	\end{theorem}
+	\begin{proof}
+	We leave the proof in the appendix. Intuitively, given that we only have a finite number of signals in $\Theta_S$ and actions in $A$, we can always have a $U^*\in \mathcal U^*$ that is perturbed \textit{slightly} from $U_S$, while not changing the induced preference ordering over $A$ for any $\theta$.
+	\end{proof}
+
+
+	A next plausible proposal would be that we consider no uncertainty, and require merely that $U^*_A$ is guaranteed to be a \textit{monotonic transformation} of $U_S$. We will indeed assume no uncertainty:
+\end{comment}
+
+
+
+\begin{comment}
+	\begin{assumption*}[Complete information]
+	Throughout this section we assume the actor and selector have the same information, $I_A=I_S$, and have perfect information about $O$.\footnote{See definition \ref{definition:perfectinformation} of 'perfect information'. }
+	\end{assumption*}
+	
+	However, it is not hard to show that even $U_A^*$ being a monotonic transformations of $U_S$ cannot be guaranteed (under complete information that is). This is because if the selector is indifferent between two outcomes (meaning that $U_S(o_1)=U_S(o_2)$), then naturally, the selector is also indifferent between giving the actor a utility function $U$ whose preference ordering on outcomes is exactly equivalent to $U_S$ on all outcomes, except on $o_1,o_2$. For example, trivially, if the selector assigns the same utility value to all outcomes, it is indifferent between all actions, and therefore indifferent between different $U\colon O\to\mathbb R$. This idea is captured in the following definition:
+	
+	\begin{definition}[Agreement with strict preferences]
+	We say that a utility function $U$ agrees with strict preferences of $U_S$ if \footnote{We will also say that $U$ agrees with strict preferences of $U_S$ \textit{on a specific pair $o_1,o_2$}, if $U_S(o_i)>U_S(o_j)$ implies $U(o_i)>U(o_j)$ for $i,j=1,2$.}
+	\[\text{for all }o_1,o_2\in O, \quad U_S(o_1)>U_S(o_2) \text{ implies } U(o_1)>U(o_2) .\]
+	\end{definition}
+	
+	
+	\begin{remark*}
+	\textnormal{This is essentially a weakening of the condition that $U$ is a monotonic transformation of $U_S$: It is not hard to see that if $U$ agrees with strict preference of $U_S$, and $U_S$ is not indifferent between any two outcomes, then $U$ and $U_S$ are equivalent up to a monotonic transformation.}\footnote{This is shown in lemma \ref{agreewithstrictpreferenceandmonotonictransformations} in the appendix.}
+	\end{remark*} 
+\end{comment}
+
+
+
+
+
+
+\begin{comment}
+	\begin{corollary}
+	If there is a pair $o_1,o_2$ such that $U_S(o_1)=U_S(o_2)$, then there is always a $U\in\mathcal U^*$ that is not a monotonic transformation of $U_S$.
+	\end{corollary}
+\end{comment}
+
+
+\begin{comment}
+	Our goal is to find conditions under which this is achieved, and it turns out that there is a conceptual link here to the notion of \textit{revealed preference} \citep{Mas-Colell1995}.\todo{remove?}
+\end{comment}
+
+\bigskip
+
+

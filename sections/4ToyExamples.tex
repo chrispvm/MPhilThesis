@@ -1,0 +1,153 @@
+ 
+ 
+\section{Toy Example Problems}\label{sec:causal:examples}
+ 
+The central question we are interested in was stated in section \ref{sec:model}: Given a set of sub-action sets $\mathcal A$ and outcome variables $\mathcal O$, and a certain state of knowledge of the actor and selector about the causal relationship between them, what utility function $U\colon O\to \mathbb R$ should the selector give the actor? 
+ 
+It turns out that it is optimal for the selector to give the actor a ``proxy" utility function $U_A^*$, which causes the actor to act optimally despite its limited knowledge. We will show how to derive a $U_A^*$ under somewhat general conditions. This utility function may deviate significantly from $U_S$. In earlier work, we have termed the resulting $U_A^*$ ``pseudo-aligned" with $U_S$ \citep{Hubinger2019}, since it causes the actor to take actions that score high on $U_S$, but only because the selector chose it to exploit a causal relation between $U$ and $U_S$: If the environment changes, this alignment between $U$ and $U_S$ will disappear.
+ 
+Perhaps the simplest form of proxy ``pseudo-alignment", is when $U$ is defined on a variable that causes the variables on $U_S$ as a side-effect, as in example \ref{example:sideeffectalignment}.\footnote{We have called this \textit{side-effect alignment} \citep{Hubinger2019}. } Our main result will in fact be a generalization of this example, and it formalizes on a simple intuition: The actor has limited knowledge to reason about the ``far away" consequences of its actions, but has ``control" over the direct consequences of its actions. On the other hand, the selector has more information about the far away consequences, because those are more ``stable." The result is a kind of ``division of labor": The selector ``communicates" to the actor what the far-away causal processes are, by integrating this information into the actor's utility function.
+ 
+ 
+\newcommand{\examplesideffectalignment}{Assume the example selector-actor problem represented in figure \ref{fig:side-effect-aligned}, with one sub-action set $A=\{-1,1\}$ and $O=X\times Y$ where $X=Y=\{-1,1\}$, and the selector's utility function is $U_S((x,y))=y$. Moreover, the training environment consists of two possible input signals: $\Theta_S=(\theta_1,\theta_2)$, each with probability $0.5$. Figure \ref{fig:side-effect-aligned} describes the game in four causal diagrams, one for each signal and each of the two players.}
+\begin{example}\label{example:sideeffectalignment}
+ 	\textnormal{\examplesideffectalignment}
+ 	\begin{comment}
+ 		\textnormal{Assume the following example selector-actor problem. Assume the actor has two possible actions: $\mathcal A=\{a_1,a_2 \}$. Assume that the output space consists of 3 variables: $O=X\times Y\times Z$. The selector's utility function is the identity function on $z$: $U_s(o)=z$.
+ 		In the environment, $z$ is influenced by $x$ by the identity function: $z=f_z(x)=x$, but the actor does not have this information. 
+ 		In the environment, $x$ and $y$ are influenced by the actions $a,b$, but the direction of these effects is not always the same: $x=f_x(a,b), y=f_y(a,b)$. However, the actor has the information to discern this function. That is, for each $\theta\in \Theta$ that occurs with positive probability ($\mathbb P[\theta|I_S]>0$), there are fixed functions $f_x^\theta, f_y^\theta$ such that for all states $\omega$ that the actor considers possible given its prior information and signal, i.e. all $\omega \in I_A\cap \Theta^{-1}(\theta)$ it holds that $f_x^\theta=f^\omega_x, f_y^\theta=f^\omega_y$. }
+ 	\end{comment}
+ \end{example}
+\newcommand{\examplesideffectalignmentfigurecaption}{An example problem that induces misalignment: There are two variables, $X,Y$, with $U_S(x,y)=y$, two signals $\Theta_S=(\theta_1,\theta_2)$, and the actor does not know the causal connection between $X$ and $Y$, no matter which signal she receives. The first-best choice for the selector is to have the actor optimize for $X$, so that, as a side-effect, his actions will optimize the selector's goal $Y$ as well. On the other hand, the actor would not know what to do if made to optimize for $Y$.}
+ \begin{figure}[H]
+ 	\centering
+ 	\captionsetup{labelfont=bf,font=small,labelsep=period}
+ 	\includegraphics[width=0.7\linewidth]{"images/examples/1-sideeffect"}
+ 	\caption{\rightskip=20pt\leftskip=20pt \textbf{(Example \ref{example:sideeffectalignment}).} \examplesideffectalignmentfigurecaption}
+ 	\label{fig:side-effect-aligned} 	
+ \end{figure}
+ 
+ 
+ 
+ 
+ \begin{proof}[Solution]
+	The selector maximizes $\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=\mathbb E[\tilde f_Y(\tilde f_X(\pi_U(\theta)))|I_S]$. For both $\theta_1,\theta_2$, the selector knows that $\tilde f_Y(x)=x$, so this equals $\mathbb E[\tilde f_X(\pi_U(\theta))|I_S]$. We use the sum rule of probability to expand this into:
+	\[\sum_{\theta\in \Theta_S}\mathbb E[\tilde f_X(\pi_U(\theta))|I_S,\theta] \cdot \mathbb  P[\theta|I_S]=\mathbb E[\tilde f_X(\pi_U(\theta))|I_S,\theta_1]\cdot 0.5 +\mathbb E[\tilde f_X(\pi_U(\theta))|I_S,\theta_2]\cdot 0.5\]
+	Now it is easy to show that $U^*((x,y))=x$ is a \textit{first-best} utility function choice from the perspective of the selector: The actor has perfect information about $\tilde f_X$ for both $\theta_1,\theta_2$, so that $\mathbb E[\tilde f_X(a)|I_S,\theta_i]=\mathbb E[\tilde f_X(a)|I_A,\theta_i]$ for $i=1,2$. Therefore if the actor chooses $\pi$ to maximize $\mathbb E[f_X(\pi(\theta))|I_S,\theta]$ for each $\theta$, then this maximizes $\mathbb E[U(f(\pi(\theta)))|I_S]$ w.r.t. $\pi$, so that $U^*$ is first-best.
+	
+	Moreover, it is easy to show that for the selector to choose the fully aligned $U=U_S$ would be suboptimal. Note that the actor does not know the causal relation $\tilde f_Y$ for both $\theta_1,\theta_2$. Therefore, by lemma \ref{lemma:noknowncauseimpliesexogenousvariable} we have $\mathbb E[\tilde f_Y(\tilde f_X(a))|I_S,\theta_i]=\mathbb E[u_Y|I_S,\theta_i]$ for some exogenous $u_Y$ for all $a$ and $i=1,2$. This is independent of $a$, so that every $a\in A$ maximizes this. This means that choosing $U((x,y))=y$ would make the actor choose a uniformly random action. By lemma \ref{lemma:firstbestpolicysetcondition}, $U_S$ is a suboptimal utility function.
+ \end{proof} 
+ 
+ 
+ 
+ 
+ \bigskip
+ 
+\noindent In example \ref{example:sideeffectalignment}, the actor did not know any causal path from its actions to $U_S$. One might hope that if the actor knows some such path, i.e. knows \textit{some} of the influence paths from its actions to the selector's goal, then it would be sub-optimal not to make use of this information by having $U$ be at least increasing in $U_S$. Example \ref{example:correlations} shows a very extreme toy example of how this can fail. This is an example of ``correlation neglect",\footnote{Spiegler has analyzed this concept in the context of bounded rationality as imperfect knowledge of causal graphs \citep{Spiegler2016} } but in this example, the selector can ``correct" for the correlation neglect, by giving the actor the \textit{inverse} of its own utility function, and still have the actor perform a first-bet policy. 
+ 
+ \begin{example}\label{example:correlations}
+		\textnormal{Assume the example problem represented in figure \ref{fig:correlations}, with one sub-action set $A=\{-1,1\}$ and $O=X\times Y\times Z$ where $X=Y=Z=\{-1,1\}$, and the selector's utility function is $U_S((x,y,z))=z$. Moreover, the training environment consists of two possible input signals: $\Theta_S=(\theta_1,\theta_2)$, each with probability $0.5$.}
+ \end{example}
+ \begin{figure}[H]
+ 	\centering
+ 	\captionsetup{labelfont=bf,font=small,labelsep=space}
+ 	\includegraphics[width=0.7\linewidth]{"images/examples/2-correlations"}
+ 	\caption{\rightskip=20pt\leftskip=20pt \textbf{(Example \ref{example:correlations}).} An extreme illustrative example of misalignment: $U_S(x,y,z)=z$, and the actor knows the direct causal effect on $Z$, but is ignorant about the indirect effect, via $Y$. The indirect effect is perfectly anti-correlated with the direct effect, and twice as strong. As a result, it is optimal for the selector to give the actor the \textit{opposite} of its own utility function. Giving the actor the fully aligned one ($U=U_S$) results in the worst-possible policy. }
+ 	\label{fig:correlations}
+ \end{figure}
+ 
+ \begin{proof}[Solution]
+ 	We can see from that diagram that the selector maximizes $\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=\mathbb E[\tilde f_Z(\tilde f_X(\pi_U(\theta)), \tilde f_Y(\tilde f_X(\pi_U(\theta))))|I_S]$. Conditional on $\theta_1$, the selector knows that $\tilde f_Z(x,y)=x-2y$, and for $\theta_2$ that $\tilde f_Z(x,y)=-x+2y$, and moreover for both $\theta_i$ that $\tilde f_Y(x)=x$. So the selector's utility can be expanded as follows:
+ 	 \[\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=
+ 	 \mathbb E [-\tilde f_X(\pi_U(\theta))|I_S,\theta_1]\cdot\frac 1 2+
+ 	 \mathbb E [\tilde f_X(\pi_U(\theta))|I_S,\theta_2]\cdot \frac 1 2\]
+ 	 
+ 	By assumption, the actor has perfect information about $\tilde f_X$, so we can replace $I_S$ with $I_A$ here: this is equal to $\mathbb E [-\tilde f_X(\pi_U(\theta))|I_A,\theta_1]\cdot\frac 1 2+
+ 	\mathbb E [\tilde f_X(\pi_U(\theta))|I_A,\theta_2]\cdot \frac 1 2$. Using lemma \ref{lemma:noknowncauseimpliesexogenousvariable} we can show that the actor will maximize this if the selector gives it the utility function $U^*(x,y,z)=-U_S(x,y,z)=-z$: For $U^*=-U_S$ the actor's expected utility can be expanded as 
+ 	\[\mathbb E[U_S(f(\pi_U(\theta)))|I_A]=
+ 	\mathbb E [\tilde f_X(\pi_U(\theta))+u_Z|I_A,\theta_1]\cdot\frac 1 2+
+ 	\mathbb E [-\tilde f_X(\pi_U(\theta))+u_Z|I_A,\theta_2]\cdot \frac 1 2\]
+ 	
+ 	If we take out the $u_Z$'s from the expectations, then we see that \[\mathbb E[U_S(f(\pi_U(\theta)))|I_S,\theta]=-\mathbb E[U_S(f(\pi_U(\theta)))|I_A,\theta].\] It is clear from this that the selector can get a \textit{first-best} policy by letting the actor maximize $-U_S$. In fact, giving the actor the fully aligned utility function would result in the \textit{worst possible} policy for the selector.
+ \end{proof}
+
+\bigskip
+ 
+ 
+One might hope that if the actor has all information about the selector's goal variable $X$, and there are no stable causal relations between $X$ and other variables, then the selector will not select a pseudo-aligned utility function. This is not necessarily the case however. There may be ``redundant" variables. In the following example, it is optimal for the selector to set $U_A=U_S$, but there are additional utility functions. This example illustrates the problem of uniqueness, which I will address further in section \ref{sec:revealedpreference}.
+ 
+\begin{example}\label{example:conditional-alignment}
+	\textnormal{Assume the example problem represented in figure \ref{fig:conditional-alignment}, with one sub-action set $A=\{-1,1\}$ and $O=X\times Y$ where $X=Y=\{-1,1\}$, and the selector's utility function is $U_S(x,y)=x$. Moreover, the training environment consists of only one input signal: $\Theta_S=(\theta_1)$, and that both actor and selector know that $\tilde f_Y()=1$ (i.e. $y=1$).}
+\end{example}
+\begin{figure}[h]
+	\centering
+	\captionsetup{labelfont=bf,font=small,labelsep=space}
+	\includegraphics[width=0.6\linewidth]{"images/examples/3-conditionalalignment"}
+	\caption{\rightskip=20pt\leftskip=20pt \textbf{(Example \ref{example:conditional-alignment}).} The aligned utility function $U(x,y)=x$ is an optimal choice for the selector, but so is $U(x,y)=x\cdot y$, since $y>0$ in all states $\omega$ in $I_S$.  }
+	\label{fig:conditional-alignment}
+\end{figure}
+\begin{proof}[Solution] Since both actor and selector have perfect information about $\tilde f_X$, it is trivial to show that $\mathbb E[U_S(f(\pi_U(\theta)))|I_S]=\mathbb E[\tilde f_X(\pi_U(\theta))|I_S,\theta]=\mathbb E[\tilde f_X(\pi_U(\theta))|I_A,\theta]=\mathbb E[U_S(f(\pi_U(\theta))|I_A]$. Hence, trivially, $U^*(x,y)=U_S(x,y)=x$ is a first-best choice for the selector.
+	
+	However, it is also trivial to show that $\tilde U(x,y)=x\cdot y$ is also a first-best choice: $\mathbb E[\tilde f_X(\pi_U(\theta))\cdot \tilde f_Y()|I_A]=\mathbb E[f_X(\pi_U(\theta))\cdot 1|I_A]$. Obviously this means that  $\argmax_{a\in  A}$ $\mathbb E[f_X(a)|I_A,\theta]=\argmax_{a\in  A}\mathbb E[f_X(a)\cdot f_Y(a)|I_A,\theta]$, so that $\tilde U$ is also a first-best choice for the selector.
+
+	In this environment, the actor will make the same choices as the aligned one, but as soon as he moves to an environment where $y<0$, then he will start minimizing rather than maximizing the selector's utility function.
+\end{proof} 
+ 
+ \bigskip
+ In all the above examples, the optimal utility function induced an optimal policy function. A natural conjecture might be that if the combined knowledge of the selector and the actor's signals is enough to pinpoint the optimal action, then there is a utility function that induces that action. However, it is not necessarily the case that there exists any utility function at all that induces an optimal policy function. That is, there are situations where the optimal policy function cannot be generated by any agent, as a result of the limited prior information of the actor. Intuitively, this happens when the information is ``reversed" compared to example \ref{example:sideeffectalignment}, namely when the far-away causal links are known to the actor, but the immediate effects are not. 
+ 
+ \begin{example}\label{example:uselessinformation}
+ 	\textnormal{Consider the example problem in figure \ref{fig:uselessinformation}. It is analogous to example \ref{example:sideeffectalignment}, except now, the actor's knowledge is ``reversed": the actor does not know the direct effect of its actions, but knows the causal relation between the outcome variables. Similarly to example \ref{example:sideeffectalignment} we have $A=\{-1,1\}$, and $O=X\times Y=\{-1,1\}$, and the selector's utility function is $U_S((x,y))=y$. Moreover, the training environment consists of two possible input signals: $\Theta_S=(\theta_1,\theta_2)$, each with probability $0.5$. }
+ \end{example}
+ \begin{figure}[h]
+ 	\centering
+ 	\captionsetup{labelfont=bf,font=small,labelsep=space}
+ 	\includegraphics[width=0.7\linewidth]{"images/examples/4-uselessinformation"}
+ 	\caption{\rightskip=20pt\leftskip=20pt \textbf{(Example \ref{example:uselessinformation}).} An example problem analogous to example \ref{example:sideeffectalignment}, but with the actor's knowledge ``reversed": the actor does not know the direct effect of its actions, but knows the causal relation between the outcome variables. As a result, the limited knowledge that the actor has is useless: No matter what utility function the selector chooses, the actor won't know how to optimize it. }
+ 	\label{fig:uselessinformation}
+ \end{figure}
+ \begin{proof}[Solution]
+ 	For any utility function $U$ that the actor could maximize, we have \[\mathbb E[U(f(\pi_U(\theta)))|I_A]=\mathbb E[U(\tilde f_X(\pi_U(\theta)),\tilde f_Y(\tilde f_X(\pi_U(\theta))))|I_A].\] But using lemma \ref{lemma:noknowncauseimpliesexogenousvariable} and the fact that the actor does not know $\tilde f_X$, this is equal to $\mathbb E[U(u_X,\tilde f_Y(u_X))|I_A]$ for some random variable $u_X$ that is independent of $\pi_U(\theta)$. 
+ 	
+ 	Hence for any utility function $U$, we have $\argmax_{a\in  A}\mathbb E[U(f(a))|I_A,\theta]= A$. Therefore, no matter what utility function the actor has, the actor will always choose a random action from a uniform distribution from $\mathcal A$. Therefore trivially, all utility functions are optimal.
+ \end{proof}
+ 
+ \begin{comment}
+ Nevertheless, the actor actually has enough information to implement an optimal policy function $\pi^*:\Theta\to\mathcal A$. 
+ 
+ \subsubsection{approach 1: selector chooses $\pi:\Theta\to\mathcal A$ directly}
+ \[\mathbb E[u_s(f(a_{u}))|I_S]=
+ \mathbb E[f_x(a_{u})|I_S]=
+ \sum_{\theta\in\Theta}\mathbb E [f_x(a_u)|I_S,\theta]\cdot \mathbb P(\theta|I_S)\]
+ Let $\Theta^X\subset \Theta$ denote the set of signals (that occur with positive probability) for which $I_S\land \theta\implies f_z(r,0)>f_z(0,r)$ and $\Theta^Y\subset \Theta$ those for which $I_S\land \theta\implies f_z(r,0)\leq f_z(0,r)$. Since the selector knows that $f_x(a,b)=a$ and $f_y(a,b)=b$, that means that for all $\theta\in \Theta^X$, $a=\argmax_{a\in \mathcal A}\mathbb E [u_s(f(a))|I_S,\theta]$, and for all $\theta \in \Theta^Y$, $b=\argmax_{a\in \mathcal A}\mathbb E [u_s(f(a))|I_S,\theta]$. This implies the following optimal policy function:
+ $\pi^*(\theta)=\begin{cases}
+ a_1\quad &\text{if } \quad \theta\in \Theta^X\\
+ a_2\quad &\text{if } \quad\theta\in \Theta^Y
+ \end{cases}$
+ 
+ \subsubsection{approach 2: selector chooses actions through actor's prior information}
+ The actor has the prior information to implement this policy function, since we assumed that 
+ \end{comment}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
